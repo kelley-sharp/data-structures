@@ -164,21 +164,26 @@ class DynamicArray:
         if start_index + quantity > self.size:
             raise DynamicArrayException
 
-        # start a loop at the starting index and put the requested number of elements in
-        # a new array
+        # loop from 0 to the quantity, and add elements to a new dynamic array starting
+        # at start_index, and increasing 1 each time
         slice_arr = DynamicArray()
         j = start_index
         for i in range(quantity):
-            slice_arr.append(self.data[j]) 
+            slice_arr.append(self.data[j])
             j += 1
 
         return slice_arr
 
     def merge(self, second_da: object) -> None:
         """
-        TODO: Write this implementation
+        Takes another dynamic array object as a parameter, and appends all
+        elements from the second array to the current one, in the same order
+        as they are stored in the second array
         """
-        pass
+
+        # loop through second dynamic array and append each element to the original array
+        for i in range(second_da.length()):
+            self.append(second_da.get_at_index(i))
 
     def map(self, map_func) -> object:
         """
@@ -333,12 +338,12 @@ if __name__ == "__main__":
     #     da.remove_at_index(0)
     #     print(" After remove_at_index(): ", da.size, da.capacity)
 
-    print("\n# remove at index - example 4")
-    da = DynamicArray([1, 2, 3, 4, 5])
-    print(da)
-    for _ in range(5):
-        da.remove_at_index(0)
-        print(da)
+    # print("\n# remove at index - example 4")
+    # da = DynamicArray([1, 2, 3, 4, 5])
+    # print(da)
+    # for _ in range(5):
+    #     da.remove_at_index(0)
+    #     print(da)
 
     # print("\n# slice example 1")
     # da = DynamicArray([1, 2, 3, 4, 5, 6, 7, 8, 9])
@@ -358,23 +363,23 @@ if __name__ == "__main__":
     #     except:
     #         print(" --- exception occurred.")
 
-    # print("\n# merge example 1")
-    # da = DynamicArray([1, 2, 3, 4, 5])
-    # da2 = DynamicArray([10, 11, 12, 13])
-    # print(da)
-    # da.merge(da2)
-    # print(da)
+    print("\n# merge example 1")
+    da = DynamicArray([1, 2, 3, 4, 5])
+    da2 = DynamicArray([10, 11, 12, 13])
+    print(da)
+    da.merge(da2)
+    print(da)
 
-    # print("\n# merge example 2")
-    # da = DynamicArray([1, 2, 3])
-    # da2 = DynamicArray()
-    # da3 = DynamicArray()
-    # da.merge(da2)
-    # print(da)
-    # da2.merge(da3)
-    # print(da2)
-    # da3.merge(da)
-    # print(da3)
+    print("\n# merge example 2")
+    da = DynamicArray([1, 2, 3])
+    da2 = DynamicArray()
+    da3 = DynamicArray()
+    da.merge(da2)
+    print(da)
+    da2.merge(da3)
+    print(da2)
+    da3.merge(da)
+    print(da3)
 
     # print("\n# map example 1")
     # da = DynamicArray([1, 5, 10, 15, 20, 25])
