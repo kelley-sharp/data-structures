@@ -143,8 +143,11 @@ class DynamicArray:
             self.capacity = max(self.size * 2, 10)
 
         # Move every value after given index further left by one, overwriting the "removed" value
-        for i in range(index, self.size - 1):
-            self.data[i] = self.data[i + 1]
+        if (index == self.size - 1):
+            self.data[index] = None
+        else:
+            for i in range(index, self.size - 1):
+                self.data[i] = self.data[i + 1]
 
         self.size -= 1
 
@@ -216,9 +219,24 @@ class DynamicArray:
 
     def reduce(self, reduce_func, initializer=None) -> object:
         """
-        TODO: Write this implementation
+        Takes an optional initial value and returns the resulting value after
+        applying the reduce_func to all elements of the dynamic array. If the
+        dynamic array is empty, returns the initializer or None if no initializer exists
         """
-        pass
+
+        # keep track of the result, initialize with initializer
+        # loop through dynamic array
+        starting_index = 0
+        if initializer:
+            accumulator = initializer
+        else:
+            accumulator = self.data[0]
+            starting_index = 1
+
+        for i in range(starting_index, self.size):
+            accumulator = reduce_func(accumulator, self.data[i])
+
+        return accumulator
 
 
 # BASIC TESTING
