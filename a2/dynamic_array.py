@@ -187,9 +187,18 @@ class DynamicArray:
 
     def map(self, map_func) -> object:
         """
-        TODO: Write this implementation
+        Returns a new dynamic array where the value of each element is derived by
+        applying a given map_func to the corresponding value from the original array
         """
-        pass
+        
+        # loop through original dynamic array, pass each value through the map_func provided
+        # append each result to a new dynamic array and return the array
+        mapped_val_array = DynamicArray()
+        for i in range(self.size):
+            mapped_val_array.append(map_func(self.data[i]))
+
+        return mapped_val_array
+
 
     def filter(self, filter_func) -> object:
         """
@@ -363,45 +372,45 @@ if __name__ == "__main__":
     #     except:
     #         print(" --- exception occurred.")
 
-    print("\n# merge example 1")
-    da = DynamicArray([1, 2, 3, 4, 5])
-    da2 = DynamicArray([10, 11, 12, 13])
-    print(da)
-    da.merge(da2)
-    print(da)
-
-    print("\n# merge example 2")
-    da = DynamicArray([1, 2, 3])
-    da2 = DynamicArray()
-    da3 = DynamicArray()
-    da.merge(da2)
-    print(da)
-    da2.merge(da3)
-    print(da2)
-    da3.merge(da)
-    print(da3)
-
-    # print("\n# map example 1")
-    # da = DynamicArray([1, 5, 10, 15, 20, 25])
+    # print("\n# merge example 1")
+    # da = DynamicArray([1, 2, 3, 4, 5])
+    # da2 = DynamicArray([10, 11, 12, 13])
     # print(da)
-    # print(da.map(lambda x: x ** 2))
+    # da.merge(da2)
+    # print(da)
 
-    # print("\n# map example 2")
-    # def double(value):
-    #     return value * 2
+    # print("\n# merge example 2")
+    # da = DynamicArray([1, 2, 3])
+    # da2 = DynamicArray()
+    # da3 = DynamicArray()
+    # da.merge(da2)
+    # print(da)
+    # da2.merge(da3)
+    # print(da2)
+    # da3.merge(da)
+    # print(da3)
 
-    # def square(value):
-    #     return value ** 2
+    print("\n# map example 1")
+    da = DynamicArray([1, 5, 10, 15, 20, 25])
+    print(da)
+    print(da.map(lambda x: x ** 2))
 
-    # def cube(value):
-    #     return value ** 3
+    print("\n# map example 2")
+    def double(value):
+        return value * 2
 
-    # def plus_one(value):
-    #     return value + 1
+    def square(value):
+        return value ** 2
 
-    # da = DynamicArray([plus_one, double, square, cube])
-    # for value in [1, 10, 20]:
-    #     print(da.map(lambda x: x(value)))
+    def cube(value):
+        return value ** 3
+
+    def plus_one(value):
+        return value + 1
+
+    da = DynamicArray([plus_one, double, square, cube])
+    for value in [1, 10, 20]:
+        print(da.map(lambda x: x(value)))
 
     # print("\n# filter example 1")
     # def filter_a(e):
