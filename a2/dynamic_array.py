@@ -311,7 +311,7 @@ if __name__ == "__main__":
         index, value = i - 4, i * 10
         try:
             da.insert_at_index(index, value)
-        except Exception as e:
+        except Exception:
             print("Can not insert value", value, "at index", index)
     print(da)
 
@@ -327,7 +327,7 @@ if __name__ == "__main__":
     for i in range(-1, 7):
         try:
             print("Index", i, ": value", da.get_at_index(i))
-        except Exception as e:
+        except Exception:
             print("Index", i, ": exception occurred")
 
     print("\n# remove_at_index - example 1")
@@ -389,13 +389,13 @@ if __name__ == "__main__":
 
     print("\n# slice example 2")
     da = DynamicArray([10, 11, 12, 13, 14, 15, 16])
-    print("SOUCE:", da)
+    print("SOURCE:", da)
     slices = [(0, 7), (-1, 7), (0, 8), (2, 3), (5, 0), (5, 3), (6, 1), (6, -1)]
     for i, cnt in slices:
         print("Slice", i, "/", cnt, end="")
         try:
             print(" --- OK: ", da.slice(i, cnt))
-        except:
+        except Exception:
             print(" --- exception occurred.")
 
     print("\n# merge example 1")
@@ -422,6 +422,7 @@ if __name__ == "__main__":
     print(da.map(lambda x: x ** 2))
 
     print("\n# map example 2")
+
     def double(value):
         return value * 2
 
@@ -439,6 +440,7 @@ if __name__ == "__main__":
         print(da.map(lambda x: x(value)))
 
     print("\n# filter example 1")
+
     def filter_a(e):
         return e > 10
 
@@ -449,6 +451,7 @@ if __name__ == "__main__":
     print(da.filter(lambda x: (10 <= x <= 20)))
 
     print("\n# filter example 2")
+
     def is_long_word(word, length):
         return len(word) > length
 

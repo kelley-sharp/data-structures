@@ -42,7 +42,7 @@ class Bag:
         """
         Adds a given value to the bag
         """
-        
+
         # use dynamic array method append to add the given value to the bag
         self.da.append(value)
 
@@ -77,44 +77,70 @@ class Bag:
         """
         Deletes the contents of the bag
         """
-        
-        # re-assign bag to empty dynamic array
-        cleared_bag = DynamicArray()
-        self.da = cleared_bag
 
+        # re-assign bag to empty dynamic array
+        self.da = DynamicArray()
 
     def equal(self, second_bag: object) -> bool:
         """
-        TODO: Write this implementation
+        Returns True if the bag is equal to the provided second bag (has the same number
+        of elements and contain the same elements without regards to the order of elements)
+        Otherwise it returns false
         """
-        pass
 
+        # check if the bags have the same number of elements
+        if self.size() != second_bag.size():
+            return False
 
+        if self.size() == 0:
+            return True
+
+        # sort both arrays
+        def bubbleSort(arr: DynamicArray):
+            for i in range(arr.size - 1):
+                for j in range(0, arr.size - i - 1):
+                    if arr.get_at_index(j) > arr.get_at_index(j + 1):
+                        temp = arr.get_at_index(j)
+                        arr.data.set(j, arr.get_at_index(j + 1))
+                        arr.data.set(j + 1, temp)
+
+        sorted_copy_of_bag_1 = self.da.slice(0, self.size())
+        bubbleSort(sorted_copy_of_bag_1)
+
+        sorted_copy_of_bag_2 = second_bag.da.slice(0, self.size())
+        bubbleSort(sorted_copy_of_bag_2)
+
+        # loop through and check if each element matches, if not, return False
+        for i in range(self.size()):
+            if sorted_copy_of_bag_1.get_at_index(i) != sorted_copy_of_bag_2.get_at_index(i):
+                return False
+
+        return True
 
 
 # BASIC TESTING
 if __name__ == "__main__":
 
-    # print("\n# add example 1")
-    # bag = Bag()
-    # print(bag)
-    # values = [10, 20, 30, 10, 20, 30]
-    # for value in values:
-    #     bag.add(value)
-    # print(bag)
+    print("\n# add example 1")
+    bag = Bag()
+    print(bag)
+    values = [10, 20, 30, 10, 20, 30]
+    for value in values:
+        bag.add(value)
+    print(bag)
 
-    # print("\n# remove example 1")
-    # bag = Bag([1, 2, 3, 1, 2, 3, 1, 2, 3])
-    # print(bag)
-    # print(bag.remove(7), bag)
-    # print(bag.remove(3), bag)
-    # print(bag.remove(3), bag)
-    # print(bag.remove(3), bag)
-    # print(bag.remove(3), bag)
+    print("\n# remove example 1")
+    bag = Bag([1, 2, 3, 1, 2, 3, 1, 2, 3])
+    print(bag)
+    print(bag.remove(7), bag)
+    print(bag.remove(3), bag)
+    print(bag.remove(3), bag)
+    print(bag.remove(3), bag)
+    print(bag.remove(3), bag)
 
-    # print("\n# count example 1")
-    # bag = Bag([1, 2, 3, 1, 2, 2])
-    # print(bag, bag.count(1), bag.count(2), bag.count(3), bag.count(4))
+    print("\n# count example 1")
+    bag = Bag([1, 2, 3, 1, 2, 2])
+    print(bag, bag.count(1), bag.count(2), bag.count(3), bag.count(4))
 
     print("\n# clear example 1")
     bag = Bag([1, 2, 3, 1, 2, 3])
@@ -122,20 +148,20 @@ if __name__ == "__main__":
     bag.clear()
     print(bag)
 
-    # print("\n# equal example 1")
-    # bag1 = Bag([10, 20, 30, 40, 50, 60])
-    # bag2 = Bag([60, 50, 40, 30, 20, 10])
-    # bag3 = Bag([10, 20, 30, 40, 50])
-    # bag_empty = Bag()
+    print("\n# equal example 1")
+    bag1 = Bag([10, 20, 30, 40, 50, 60])
+    bag2 = Bag([60, 50, 40, 30, 20, 10])
+    bag3 = Bag([10, 20, 30, 40, 50])
+    bag_empty = Bag()
 
-    # print(bag1, bag2, bag3, bag_empty, sep="\n")
-    # print(bag1.equal(bag2), bag2.equal(bag1))
-    # print(bag1.equal(bag3), bag3.equal(bag1))
-    # print(bag2.equal(bag3), bag3.equal(bag2))
-    # print(bag1.equal(bag_empty), bag_empty.equal(bag1))
-    # print(bag_empty.equal(bag_empty))
-    # print(bag1, bag2, bag3, bag_empty, sep="\n")
+    print(bag1, bag2, bag3, bag_empty, sep="\n")
+    print(bag1.equal(bag2), bag2.equal(bag1))
+    print(bag1.equal(bag3), bag3.equal(bag1))
+    print(bag2.equal(bag3), bag3.equal(bag2))
+    print(bag1.equal(bag_empty), bag_empty.equal(bag1))
+    print(bag_empty.equal(bag_empty))
+    print(bag1, bag2, bag3, bag_empty, sep="\n")
 
-    # bag1 = Bag([100, 200, 300, 200])
-    # bag2 = Bag([100, 200, 30, 100])
-    # print(bag1.equal(bag2))
+    bag1 = Bag([100, 200, 300, 200])
+    bag2 = Bag([100, 200, 30, 100])
+    print(bag1.equal(bag2))

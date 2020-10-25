@@ -4,7 +4,7 @@
 # Description:
 # Last revised:
 
-from dynamic_array import *
+from dynamic_array import DynamicArray
 
 
 class QueueException(Exception):
@@ -58,8 +58,6 @@ class Queue:
         TODO: Write this implementation
         """
         pass
-
-
 
 
 # BASIC TESTING
