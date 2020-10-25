@@ -62,9 +62,16 @@ class Bag:
 
     def count(self, value: object) -> int:
         """
-        TODO: Write this implementation
+        Returns the number of elements found in the bag that match the given value
         """
-        pass
+        
+        # loop through the bag and add matching elements to the count
+        count = 0
+        for i in range(self.size()):
+            if self.da.get_at_index(i) == value:
+                count += 1
+
+        return count
 
     def clear(self) -> None:
         """
