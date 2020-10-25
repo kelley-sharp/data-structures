@@ -1,10 +1,10 @@
 # Course: CS261 - Data Structures
-# Student Name:
-# Assignment:
-# Description:
-# Last revised:
+# Student Name: Kelley Sharp
+# Assignment: A2 - Part 3
+# Description: Implement a Stack ADT class
+# Last revised: 10/24/2020
 
-from dynamic_array import *
+from dynamic_array import DynamicArray
 
 
 class StackException(Exception):
@@ -49,22 +49,39 @@ class Stack:
 
     def push(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new element to the top of the stack
         """
-        pass
+
+        # use dynamic array append method to add the element
+        self.da.append(value)
 
     def pop(self) -> object:
         """
-        TODO: Write this implementation
+        Removes the top element from the stack and returns its value
         """
-        pass
+
+        # if the stack is empty, raise error
+        if self.is_empty():
+            raise StackException
+
+        # save the top element's value
+        top = self.da.get_at_index(self.da.size - 1)
+
+        # use dynamic array method remove_at_index to pop off the top element
+        self.da.remove_at_index(self.da.size - 1)
+
+        return top
 
     def top(self) -> object:
         """
-        TODO: Write this implementation
+        Returns the value of the top element of the stack without removing it
         """
-        pass
 
+        # if the stack is empty, raise error
+        if self.da.is_empty():
+            raise StackException
+
+        return self.da.get_at_index(self.da.size - 1)
 
 
 # BASIC TESTING

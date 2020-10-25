@@ -1,8 +1,8 @@
 # Course: CS261 - Data Structures
-# Student Name:
-# Assignment:
-# Description:
-# Last revised:
+# Student Name: Kelley Sharp
+# Assignment: A2 - Part 4
+# Description: Implement a Queue ADT class
+# Last revised: 10/24/2020
 
 from dynamic_array import DynamicArray
 
@@ -49,7 +49,7 @@ class Queue:
 
     def enqueue(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        
         """
         pass
 
