@@ -64,7 +64,7 @@ class Bag:
         """
         Returns the number of elements found in the bag that match the given value
         """
-        
+
         # loop through the bag and add matching elements to the count
         count = 0
         for i in range(self.size()):
@@ -75,9 +75,13 @@ class Bag:
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        Deletes the contents of the bag
         """
-        pass
+        
+        # re-assign bag to empty dynamic array
+        cleared_bag = DynamicArray()
+        self.da = cleared_bag
+
 
     def equal(self, second_bag: object) -> bool:
         """
@@ -108,15 +112,15 @@ if __name__ == "__main__":
     # print(bag.remove(3), bag)
     # print(bag.remove(3), bag)
 
-    print("\n# count example 1")
-    bag = Bag([1, 2, 3, 1, 2, 2])
-    print(bag, bag.count(1), bag.count(2), bag.count(3), bag.count(4))
+    # print("\n# count example 1")
+    # bag = Bag([1, 2, 3, 1, 2, 2])
+    # print(bag, bag.count(1), bag.count(2), bag.count(3), bag.count(4))
 
-    # print("\n# clear example 1")
-    # bag = Bag([1, 2, 3, 1, 2, 3])
-    # print(bag)
-    # bag.clear()
-    # print(bag)
+    print("\n# clear example 1")
+    bag = Bag([1, 2, 3, 1, 2, 3])
+    print(bag)
+    bag.clear()
+    print(bag)
 
     # print("\n# equal example 1")
     # bag1 = Bag([10, 20, 30, 40, 50, 60])
