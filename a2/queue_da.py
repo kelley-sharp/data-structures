@@ -51,7 +51,7 @@ class Queue:
         """
         Adds a new value to the end of the queue
         """
-        
+
         # use dynamic array method append to add the value
         self.da.append(value)
 
