@@ -49,26 +49,39 @@ class Queue:
 
     def enqueue(self, value: object) -> None:
         """
-        
+        Adds a new value to the end of the queue
         """
-        pass
+        
+        # use dynamic array method append to add the value
+        self.da.append(value)
 
     def dequeue(self) -> object:
         """
-        TODO: Write this implementation
+        Removes the value from beginning of the queue and returns it
         """
-        pass
+
+        # if the queue is empty, raise error
+        if self.is_empty():
+            raise QueueException
+
+        # save value of first queue element
+        first_val = self.da.get_at_index(0)
+
+        # use dynamic array method remove_at_index to remove the value
+        self.da.remove_at_index(0)
+
+        return first_val
 
 
 # BASIC TESTING
 if __name__ == "__main__":
 
-    print("\n# enqueue example 1")
-    q = Queue()
-    print(q)
-    for value in [1, 2, 3, 4, 5]:
-        q.enqueue(value)
-    print(q)
+    # print("\n# enqueue example 1")
+    # q = Queue()
+    # print(q)
+    # for value in [1, 2, 3, 4, 5]:
+    #     q.enqueue(value)
+    # print(q)
 
     print("\n# dequeue example 1")
     q = Queue()
