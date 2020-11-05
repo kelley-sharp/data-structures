@@ -77,7 +77,7 @@ class LinkedList:
 
     def add_front(self, value: object) -> None:
         """
-        Adds a new node at the beginning of the list
+        Adds a new node at the beginning of the list (after the first sentinel)
         """
         if self.head is None:
             new_node = SLNode(value)
@@ -90,10 +90,21 @@ class LinkedList:
 
     def add_back(self, value: object) -> None:
         """
-        
+        Adds a new node at the end of the list (before the last sentinel)
         """
-        # traverse the list to find last node
-        pass
+        new_node = SLNode(value)
+
+        if self.head.next is self.tail:
+            self.head.next = new_node
+            new_node.next = self.tail
+        else:
+            # traverse the list to find last node and add the new node
+            cur = self.head.next
+            while cur.next:
+                if cur.next == self.tail:
+                    cur.next = new_node
+                    new_node.next = self.tail
+                cur = cur.next
 
     def insert_at_index(self, index: int, value: object) -> None:
         """
@@ -103,15 +114,32 @@ class LinkedList:
 
     def remove_front(self) -> None:
         """
-        TODO: Write this implementation
+        Removes the node at the front of the list
         """
-        pass
+        # if the list is empty, throw an error
+        if self.head.next == self.tail:
+            raise SLLException
+        else:
+            self.head.next = self.head.next.next
 
     def remove_back(self) -> None:
         """
-        TODO: Write this implementation
+        Removes the last node from the list
         """
-        pass
+        # if the list is empty, throw an error
+        if self.head.next == self.tail:
+            raise SLLException
+        else:
+            # traverse the list to find last node and change the pointers
+            cur = self.head.next
+            if cur.next == self.tail:
+                self.head.next = self.tail
+            else:
+                while cur.next.next:
+                    if cur.next.next == self.tail:
+                        cur.next = self.tail
+                        break
+                    cur = cur.next
 
     def remove_at_index(self, index: int) -> None:
         """
@@ -156,13 +184,13 @@ class LinkedList:
 if __name__ == '__main__':
     pass
 
-    print('\n# add_front example 1')
-    list = LinkedList()
-    print(list)
-    list.add_front('A')
-    list.add_front('B')
-    list.add_front('C')
-    print(list)
+    # print('\n# add_front example 1')
+    # list = LinkedList()
+    # print(list)
+    # list.add_front('A')
+    # list.add_front('B')
+    # list.add_front('C')
+    # print(list)
     #
     #
     # print('\n# add_back example 1')
@@ -197,21 +225,21 @@ if __name__ == '__main__':
     #         print(type(e))
     #
     #
-    # print('\n# remove_back example 1')
-    # list = LinkedList()
-    # try:
-    #     list.remove_back()
-    # except Exception as e:
-    #     print(type(e))
-    # list.add_front('Z')
-    # list.remove_back()
-    # print(list)
-    # list.add_front('Y')
-    # list.add_back('Z')
-    # list.add_front('X')
-    # print(list)
-    # list.remove_back()
-    # print(list)
+    print('\n# remove_back example 1')
+    list = LinkedList()
+    try:
+        list.remove_back()
+    except Exception as e:
+        print(type(e))
+    list.add_front('Z')
+    list.remove_back()
+    print(list)
+    list.add_front('Y')
+    list.add_back('Z')
+    list.add_front('X')
+    print(list)
+    list.remove_back()
+    print(list)
     #
     #
     # print('\n# remove_at_index example 1')
