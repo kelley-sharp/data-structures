@@ -166,9 +166,25 @@ class LinkedList:
 
     def remove_at_index(self, index: int) -> None:
         """
-        TODO: Write this implementation
+        Removes the node from the list given its index. Index 0 refers to the beginning of the list
         """
-        pass
+        # if the index is invalid, throw error
+        if index < 0 or index > self.length() - 1:
+            raise SLLException
+
+        if index == 0:
+            self.head.next = self.head.next.next
+            return
+
+        # traverse the list until the index is reached and change the pointers
+        cur = self.head.next
+        i = 0
+        while cur.next:
+            if i + 1 == index:
+                cur.next = cur.next.next
+                break
+            cur = cur.next
+            i += 1
 
     def get_front(self) -> object:
         """
@@ -225,16 +241,16 @@ if __name__ == '__main__':
     # print(list)
     #
     #
-    print('\n# insert_at_index example 1')
-    list = LinkedList()
-    test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
-    for index, value in test_cases:
-        print('Insert of', value, 'at', index, ': ', end='')
-        try:
-            list.insert_at_index(index, value)
-            print(list)
-        except Exception as e:
-            print(type(e))
+    # print('\n# insert_at_index example 1')
+    # list = LinkedList()
+    # test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
+    # for index, value in test_cases:
+    #     print('Insert of', value, 'at', index, ': ', end='')
+    #     try:
+    #         list.insert_at_index(index, value)
+    #         print(list)
+    #     except Exception as e:
+    #         print(type(e))
     #
     #
     # print('\n# remove_front example 1')
@@ -265,17 +281,17 @@ if __name__ == '__main__':
     # print(list)
     #
     #
-    # print('\n# remove_at_index example 1')
-    # list = LinkedList([1, 2, 3, 4, 5, 6])
-    # print(list)
-    # for index in [0, 0, 0, 2, 2, -2]:
-    #     print('Removed at index:', index, ': ', end='')
-    #     try:
-    #         list.remove_at_index(index)
-    #         print(list)
-    #     except Exception as e:
-    #         print(type(e))
-    # print(list)
+    print('\n# remove_at_index example 1')
+    list = LinkedList([1, 2, 3, 4, 5, 6])
+    print(list)
+    for index in [0, 0, 0, 2, 2, -2]:
+        print('Removed at index:', index, ': ', end='')
+        try:
+            list.remove_at_index(index)
+            print(list)
+        except Exception as e:
+            print(type(e))
+    print(list)
     #
     #
     # print('\n# get_front example 1')
