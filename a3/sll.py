@@ -188,9 +188,13 @@ class LinkedList:
 
     def get_front(self) -> object:
         """
-        TODO: Write this implementation
+        Returns value from the first node in the list without removing it
         """
-        pass
+        # if the list is empty, throw and error
+        if self.head.next == self.tail:
+            raise SLLException
+        else:
+            return self.head.next.value
 
     def get_back(self) -> object:
         """
@@ -281,30 +285,30 @@ if __name__ == '__main__':
     # print(list)
     #
     #
-    print('\n# remove_at_index example 1')
-    list = LinkedList([1, 2, 3, 4, 5, 6])
-    print(list)
-    for index in [0, 0, 0, 2, 2, -2]:
-        print('Removed at index:', index, ': ', end='')
-        try:
-            list.remove_at_index(index)
-            print(list)
-        except Exception as e:
-            print(type(e))
-    print(list)
+    # print('\n# remove_at_index example 1')
+    # list = LinkedList([1, 2, 3, 4, 5, 6])
+    # print(list)
+    # for index in [0, 0, 0, 2, 2, -2]:
+    #     print('Removed at index:', index, ': ', end='')
+    #     try:
+    #         list.remove_at_index(index)
+    #         print(list)
+    #     except Exception as e:
+    #         print(type(e))
+    # print(list)
     #
     #
-    # print('\n# get_front example 1')
-    # list = LinkedList(['A', 'B'])
-    # print(list.get_front())
-    # print(list.get_front())
-    # list.remove_front()
-    # print(list.get_front())
-    # list.remove_back()
-    # try:
-    #     print(list.get_front())
-    # except Exception as e:
-    #     print(type(e))
+    print('\n# get_front example 1')
+    list = LinkedList(['A', 'B'])
+    print(list.get_front())
+    print(list.get_front())
+    list.remove_front()
+    print(list.get_front())
+    list.remove_back()
+    try:
+        print(list.get_front())
+    except Exception as e:
+        print(type(e))
     #
     #
     # print('\n# get_back example 1')
