@@ -198,15 +198,33 @@ class LinkedList:
 
     def get_back(self) -> object:
         """
-        TODO: Write this implementation
+        Returns value from the last node in the list without removing it
         """
-        pass
+        # if the list is empty, throw and error
+        if self.head.next == self.tail:
+            raise SLLException
+        else:
+            cur = self.head.next
+            while cur.next:
+                if cur.next == self.tail:
+                    return cur.value
+                cur = cur.next
 
     def remove(self, value: object) -> bool:
         """
-        TODO: Write this implementation
+        Removes the first node in the list that matches the provided “value” object. 
+        Method returns True if some node was actually removed from the list. 
+        Otherwise it returns False
         """
-        pass
+        
+        cur = self.head.next
+        while cur.next:
+            if cur.next.value == value:
+                cur.next = cur.next.next
+                return True
+            cur = cur.next
+
+        return False
 
     def count(self, value: object) -> int:
         """
@@ -298,17 +316,17 @@ if __name__ == '__main__':
     # print(list)
     #
     #
-    print('\n# get_front example 1')
-    list = LinkedList(['A', 'B'])
-    print(list.get_front())
-    print(list.get_front())
-    list.remove_front()
-    print(list.get_front())
-    list.remove_back()
-    try:
-        print(list.get_front())
-    except Exception as e:
-        print(type(e))
+    # print('\n# get_front example 1')
+    # list = LinkedList(['A', 'B'])
+    # print(list.get_front())
+    # print(list.get_front())
+    # list.remove_front()
+    # print(list.get_front())
+    # list.remove_back()
+    # try:
+    #     print(list.get_front())
+    # except Exception as e:
+    #     print(type(e))
     #
     #
     # print('\n# get_back example 1')
@@ -320,11 +338,11 @@ if __name__ == '__main__':
     # print(list.get_back())
     #
     #
-    # print('\n# remove example 1')
-    # list = LinkedList([1, 2, 3, 1, 2, 3, 1, 2, 3])
-    # print(list)
-    # for value in [7, 3, 3, 3, 3]:
-    #     print(list.remove(value), list.length(), list)
+    print('\n# remove example 1')
+    list = LinkedList([1, 2, 3, 1, 2, 3, 1, 2, 3])
+    print(list)
+    for value in [7, 3, 3, 3, 3]:
+        print(list.remove(value), list.length(), list)
     #
     #
     # print('\n# count example 1')
