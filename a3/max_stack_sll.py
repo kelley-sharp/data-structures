@@ -3,10 +3,7 @@
 # Assignment: Stack ADT 
 # Description: Implement a Stack ADT class by using the LinkedList implemented in part 1
 
-
-
-from sll import *
-
+from sll import LinkedList
 
 class StackException(Exception):
     """
@@ -52,27 +49,40 @@ class MaxStack:
 
     def push(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new element to the top of the stack
         """
-        pass
+        self.sll_val.add_front(value)
 
     def pop(self) -> object:
         """
-        TODO: Write this implementation
+        Removes the top element from the stack and returns its value
         """
-        pass
+        # if the stack is empty, throw error
+        if self.is_empty():
+            raise StackException
+        else:
+            return_val = self.sll_val.get_front()
+            self.sll_val.remove_front()
+            return return_val
 
     def top(self) -> object:
         """
-        TODO: Write this implementation
+        Returns the value of the top element of the stack without removing it
         """
-        pass
+        # if the stack is empty, throw error
+        if self.is_empty():
+            raise StackException
+        else:
+            return self.sll_val.get_front()
 
     def get_max(self) -> object:
         """
-        TODO: Write this implementation
+        Returns the maximum value currently stored in the stack
         """
-        pass
+        if self.is_empty():
+            raise StackException
+        else:
+            cur = 
 
 
 # BASIC TESTING
@@ -102,18 +112,18 @@ if __name__ == "__main__":
     #         print("Exception:", type(e))
     #
     #
-    # print('\n# top example 1')
-    # s = MaxStack()
-    # try:
-    #     s.top()
-    # except Exception as e:
-    #     print("No elements in stack", type(e))
-    # s.push(10)
-    # s.push(20)
-    # print(s)
-    # print(s.top())
-    # print(s.top())
-    # print(s)
+    print('\n# top example 1')
+    s = MaxStack()
+    try:
+        s.top()
+    except Exception as e:
+        print("No elements in stack", type(e))
+    s.push(10)
+    s.push(20)
+    print(s)
+    print(s.top())
+    print(s.top())
+    print(s)
     #
     # print('\n# get_max example 1')
     # s = MaxStack()

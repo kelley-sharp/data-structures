@@ -104,9 +104,16 @@ class CircularList:
 
     def add_front(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new node at the beginning of the list (after the first sentinel)
         """
-        pass
+        if self.head is None:
+            new_node = SLNode(value)
+            self.head.next = new_node
+            new_node.next = self.tail
+        else:
+            new_node = SLNode(value)
+            new_node.next = self.head.next
+            self.head.next = new_node        
 
     def add_back(self, value: object) -> None:
         """
