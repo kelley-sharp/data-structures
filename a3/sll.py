@@ -3,8 +3,6 @@
 # Assignment: Part 1 - Deque and Bag ADT 
 # Description: Implement Deque and Bag ADT interfaces with a Singly Linked List
 
-
-
 class SLLException(Exception):
     """
     Custom exception class to be used by Singly Linked List
@@ -216,7 +214,6 @@ class LinkedList:
         Method returns True if some node was actually removed from the list. 
         Otherwise it returns False
         """
-        
         cur = self.head.next
         while cur.next:
             if cur.next.value == value:
@@ -228,18 +225,43 @@ class LinkedList:
 
     def count(self, value: object) -> int:
         """
-        TODO: Write this implementation
+        Counts the number of elements in the list that match the provided “value” object
         """
-        pass
+        count = 0
+        cur = self.head.next
+        while cur.next:
+            if cur.value == value:
+                count += 1
+            cur = cur.next
+
+        return count
 
     def slice(self, start_index: int, size: int) -> object:
         """
-        TODO: Write this implementation
+        Returns a new LinkedList object that contains the requested number of nodes
+        from the original list starting with the node located at the requested start index
         """
-        pass
+        # if start_index is out of range, raise error
+        if start_index < 0 or start_index > self.length() - 1:
+            raise SLLException
+        # if there's not enough room for the desired size of slice, raise error
+        elif start_index + size > self.length():
+            raise SLLException
+        else:
+            new_LL = LinkedList()
+            cur = self.head.next
+            i = 0
+            j = 1
+            while cur.next:
+                if i == start_index and j <= size:
+                    new_LL.add_back(cur.value)
+                    j += 1
+                    cur = cur.next
+                else:
+                    i += 1
+                    cur = cur.next
 
-
-
+            return new_LL
 
 
 if __name__ == '__main__':
@@ -337,35 +359,35 @@ if __name__ == '__main__':
     # print(list)
     # print(list.get_back())
     #
+    # #
+    # print('\n# remove example 1')
+    # list = LinkedList([1, 2, 3, 1, 2, 3, 1, 2, 3])
+    # print(list)
+    # for value in [7, 3, 3, 3, 3]:
+    #     print(list.remove(value), list.length(), list)
     #
-    print('\n# remove example 1')
-    list = LinkedList([1, 2, 3, 1, 2, 3, 1, 2, 3])
-    print(list)
-    for value in [7, 3, 3, 3, 3]:
-        print(list.remove(value), list.length(), list)
-    #
-    #
+    
     # print('\n# count example 1')
     # list = LinkedList([1, 2, 3, 1, 2, 2])
     # print(list, list.count(1), list.count(2), list.count(3), list.count(4))
     #
-    #
-    # print('\n# slice example 1')
-    # list = LinkedList([1, 2, 3, 4, 5, 6, 7, 8, 9])
-    # ll_slice = list.slice(1, 3)
-    # print(list, ll_slice, sep="\n")
-    # ll_slice.remove_at_index(0)
-    # print(list, ll_slice, sep="\n")
-    #
-    #
-    # print('\n# slice example 2')
-    # list = LinkedList([10, 11, 12, 13, 14, 15, 16])
-    # print("SOURCE:", list)
-    # slices = [(0, 7), (-1, 7), (0, 8), (2, 3), (5, 0), (5, 3), (6, 1)]
-    # for index, size in slices:
-    #     print("Slice", index, "/", size, end="")
-    #     try:
-    #         print(" --- OK: ", list.slice(index, size))
-    #     except:
-    #         print(" --- exception occurred.")
+    
+    print('\n# slice example 1')
+    list = LinkedList([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    ll_slice = list.slice(1, 3)
+    print(list, ll_slice, sep="\n")
+    ll_slice.remove_at_index(0)
+    print(list, ll_slice, sep="\n")
+    
+    
+    print('\n# slice example 2')
+    list = LinkedList([10, 11, 12, 13, 14, 15, 16])
+    print("SOURCE:", list)
+    slices = [(0, 7), (-1, 7), (0, 8), (2, 3), (5, 0), (5, 3), (6, 1)]
+    for index, size in slices:
+        print("Slice", index, "/", size, end="")
+        try:
+            print(" --- OK: ", list.slice(index, size))
+        except:
+            print(" --- exception occurred.")
 
