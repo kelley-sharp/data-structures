@@ -141,9 +141,30 @@ class CircularList:
 
     def insert_at_index(self, index: int, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new value at the specified index position in the linked list. Index 0
+        refers to the beginning of the list (right after the front sentinel)
         """
-        pass
+        # if the index is invalid, throw an error
+        if index < 0 or index > self.length():
+            raise CDLLException
+
+        if index == 0:
+            self.add_front(value)
+            return
+
+        new_node = DLNode(value)
+
+        # traverse the list until the index is reached and change the pointers
+        cur = self.sentinel.next
+        i = 0
+        while cur.next:
+            if i == index:
+                cur.prev.next = new_node
+                new_node.next = cur
+                new_node.prev = cur.prev
+                break
+            cur = cur.next
+            i += 1
 
     def remove_front(self) -> None:
         """
@@ -164,8 +185,6 @@ class CircularList:
         if self.sentinel.next == self.sentinel:
             raise CDLLException
         else:
-            # self.sentinel.prev = self.sentinel.prev.prev
-            # self.sentinel.prev.prev.next = self.sentinel
             cur = self.sentinel.next
             while cur.next.next:
                 if cur.next.next == self.sentinel:
@@ -260,16 +279,16 @@ if __name__ == '__main__':
     # lst.add_back('A')
     # print(lst)
     #
-    # print('\n# insert_at_index example 1')
-    # lst = CircularList()
-    # test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
-    # for index, value in test_cases:
-    #     print('Insert of', value, 'at', index, ': ', end='')
-    #     try:
-    #         lst.insert_at_index(index, value)
-    #         print(lst)
-    #     except Exception as e:
-    #         print(type(e))
+    print('\n# insert_at_index example 1')
+    lst = CircularList()
+    test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
+    for index, value in test_cases:
+        print('Insert of', value, 'at', index, ': ', end='')
+        try:
+            lst.insert_at_index(index, value)
+            print(lst)
+        except Exception as e:
+            print(type(e))
     #
     # print('\n# remove_front example 1')
     # lst = CircularList([1, 2])
@@ -281,21 +300,21 @@ if __name__ == '__main__':
     #     except Exception as e:
     #         print(type(e))
     #
-    print('\n# remove_back example 1')
-    lst = CircularList()
-    try:
-        lst.remove_back()
-    except Exception as e:
-        print(type(e))
-    lst.add_front('Z')
-    lst.remove_back()
-    print(lst)
-    lst.add_front('Y')
-    lst.add_back('Z')
-    lst.add_front('X')
-    print(lst)
-    lst.remove_back()
-    print(lst)
+    # print('\n# remove_back example 1')
+    # lst = CircularList()
+    # try:
+    #     lst.remove_back()
+    # except Exception as e:
+    #     print(type(e))
+    # lst.add_front('Z')
+    # lst.remove_back()
+    # print(lst)
+    # lst.add_front('Y')
+    # lst.add_back('Z')
+    # lst.add_front('X')
+    # print(lst)
+    # lst.remove_back()
+    # print(lst)
     #
     # print('\n# remove_at_index example 1')
     # lst = CircularList([1, 2, 3, 4, 5, 6])

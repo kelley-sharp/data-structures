@@ -116,9 +116,7 @@ class LinkedList:
         new_node = SLNode(value)
 
         if index == 0:
-            temp = self.head.next
-            self.head.next = new_node
-            new_node.next = temp
+            self.add_front(value)
             return
 
         # traverse the list until the index is reached and change the pointers
@@ -285,16 +283,16 @@ if __name__ == '__main__':
     # print(list)
     #
     #
-    # print('\n# insert_at_index example 1')
-    # list = LinkedList()
-    # test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
-    # for index, value in test_cases:
-    #     print('Insert of', value, 'at', index, ': ', end='')
-    #     try:
-    #         list.insert_at_index(index, value)
-    #         print(list)
-    #     except Exception as e:
-    #         print(type(e))
+    print('\n# insert_at_index example 1')
+    list = LinkedList()
+    test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
+    for index, value in test_cases:
+        print('Insert of', value, 'at', index, ': ', end='')
+        try:
+            list.insert_at_index(index, value)
+            print(list)
+        except Exception as e:
+            print(type(e))
     #
     #
     # print('\n# remove_front example 1')
@@ -308,21 +306,21 @@ if __name__ == '__main__':
     #         print(type(e))
     #
     #
-    print('\n# remove_back example 1')
-    list = LinkedList()
-    try:
-        list.remove_back()
-    except Exception as e:
-        print(type(e))
-    list.add_front('Z')
-    list.remove_back()
-    print(list)
-    list.add_front('Y')
-    list.add_back('Z')
-    list.add_front('X')
-    print(list)
-    list.remove_back()
-    print(list)
+    # print('\n# remove_back example 1')
+    # list = LinkedList()
+    # try:
+    #     list.remove_back()
+    # except Exception as e:
+    #     print(type(e))
+    # list.add_front('Z')
+    # list.remove_back()
+    # print(list)
+    # list.add_front('Y')
+    # list.add_back('Z')
+    # list.add_front('X')
+    # print(list)
+    # list.remove_back()
+    # print(list)
     #
     #
     # print('\n# remove_at_index example 1')
