@@ -372,22 +372,20 @@ if __name__ == '__main__':
     # print(list, list.count(1), list.count(2), list.count(3), list.count(4))
     #
     
-    print('\n# slice example 1')
-    list = LinkedList([1, 2, 3, 4, 5, 6, 7, 8, 9])
-    ll_slice = list.slice(1, 3)
-    print(list, ll_slice, sep="\n")
-    ll_slice.remove_at_index(0)
-    print(list, ll_slice, sep="\n")
-    
-    
-    print('\n# slice example 2')
-    list = LinkedList([10, 11, 12, 13, 14, 15, 16])
-    print("SOURCE:", list)
-    slices = [(0, 7), (-1, 7), (0, 8), (2, 3), (5, 0), (5, 3), (6, 1)]
-    for index, size in slices:
-        print("Slice", index, "/", size, end="")
-        try:
-            print(" --- OK: ", list.slice(index, size))
-        except:
-            print(" --- exception occurred.")
-
+    # print('\n# slice example 1')
+    # list = LinkedList([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    # ll_slice = list.slice(1, 3)
+    # print(list, ll_slice, sep="\n")
+    # ll_slice.remove_at_index(0)
+    # print(list, ll_slice, sep="\n")
+     
+    # print('\n# slice example 2')
+    # list = LinkedList([10, 11, 12, 13, 14, 15, 16])
+    # print("SOURCE:", list)
+    # slices = [(0, 7), (-1, 7), (0, 8), (2, 3), (5, 0), (5, 3), (6, 1)]
+    # for index, size in slices:
+    #     print("Slice", index, "/", size, end="")
+    #     try:
+    #         print(" --- OK: ", list.slice(index, size))
+    #     except:
+    #         print(" --- exception occurred.")

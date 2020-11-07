@@ -106,20 +106,38 @@ class CircularList:
         """
         Adds a new node at the beginning of the list (after the first sentinel)
         """
-        if self.head is None:
-            new_node = SLNode(value)
-            self.head.next = new_node
-            new_node.next = self.tail
+        if self.sentinel is None:
+            new_node = DLNode(value)
+            self.sentinel.next = new_node
+            new_node.prev = self.sentinel
+            new_node.next = self.sentinel
         else:
-            new_node = SLNode(value)
-            new_node.next = self.head.next
-            self.head.next = new_node        
+            new_node = DLNode(value)
+            new_node.next = self.sentinel.next
+            self.sentinel.next.prev = new_node
+            self.sentinel.next = new_node
+            new_node.prev = self.sentinel
 
     def add_back(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new node at the end of the list (before the last sentinel)
         """
-        pass
+        new_node = DLNode(value)
+
+        if self.sentinel.next is self.sentinel:
+            self.sentinel.next = new_node
+            new_node.next = self.sentinel
+            new_node.prev = self.sentinel
+        else:
+            # traverse the list to find last node and add the new node
+            cur = self.sentinel.next
+            while cur.next:
+                if cur.next == self.sentinel:
+                    cur.next = new_node
+                    new_node.next = self.sentinel
+                    new_node.prev = cur
+                    break
+                cur = cur.next
 
     def insert_at_index(self, index: int, value: object) -> None:
         """
@@ -217,13 +235,13 @@ if __name__ == '__main__':
     # lst.add_front('C')
     # print(lst)
     #
-    # print('\n# add_back example 1')
-    # lst = CircularList()
-    # print(lst)
-    # lst.add_back('C')
-    # lst.add_back('B')
-    # lst.add_back('A')
-    # print(lst)
+    print('\n# add_back example 1')
+    lst = CircularList()
+    print(lst)
+    lst.add_back('C')
+    lst.add_back('B')
+    lst.add_back('A')
+    print(lst)
     #
     # print('\n# insert_at_index example 1')
     # lst = CircularList()
