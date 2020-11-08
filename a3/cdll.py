@@ -152,6 +152,10 @@ class CircularList:
             self.add_front(value)
             return
 
+        if index == self.length():
+            self.add_back(value)
+            return
+
         new_node = DLNode(value)
 
         # traverse the list until the index is reached and change the pointers
@@ -159,9 +163,10 @@ class CircularList:
         i = 0
         while cur.next:
             if i == index:
-                cur.prev.next = new_node
                 new_node.next = cur
                 new_node.prev = cur.prev
+                cur.prev.next = new_node
+                cur.prev = new_node
                 break
             cur = cur.next
             i += 1
