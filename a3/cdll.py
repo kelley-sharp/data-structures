@@ -98,7 +98,7 @@ class CircularList:
         Return True is list is empty, False otherwise
         DO NOT CHANGE THIS METHOD IN ANY WAY
         """
-        return self.sentinel.next == self.sentinel
+        return self.sentinel.next is self.sentinel
 
     # ------------------------------------------------------------------ #
 
@@ -106,36 +106,41 @@ class CircularList:
         """
         Adds a new node at the beginning of the list (after the first sentinel)
         """
-        if self.sentinel is None:
-            new_node = DLNode(value)
-            self.sentinel.next = new_node
-            new_node.prev = self.sentinel
-            new_node.next = self.sentinel
-        else:
-            new_node = DLNode(value)
-            new_node.next = self.sentinel.next
-            self.sentinel.next.prev = new_node
-            self.sentinel.next = new_node
-            new_node.prev = self.sentinel
-
-    def add_back(self, value: object) -> None:
-        """
-        Adds a new node at the end of the list (before the last sentinel)
-        """
         new_node = DLNode(value)
 
         if self.sentinel.next is self.sentinel:
             self.sentinel.next = new_node
+            self.sentinel.prev = new_node
+            new_node.next = self.sentinel
+            new_node.prev = self.sentinel
+        else:
+            existing_front = self.sentinel.next
+            existing_front.prev = new_node
+            new_node.next = existing_front
+            new_node.prev = self.sentinel
+            self.sentinel.next = new_node
+
+    def add_back(self, value: object) -> None:
+        """
+        Adds a new node at the end of the list (before the sentinel)
+        """
+        new_node = DLNode(value)
+
+        # if list is empty
+        if self.sentinel.next is self.sentinel:
+            self.sentinel.next = new_node
+            self.sentinel.prev = new_node
             new_node.next = self.sentinel
             new_node.prev = self.sentinel
         else:
             # traverse the list to find last node and add the new node
             cur = self.sentinel.next
-            while cur.next:
-                if cur.next == self.sentinel:
+            while cur is not self.sentinel:
+                if cur.next is self.sentinel:
                     cur.next = new_node
                     new_node.next = self.sentinel
                     new_node.prev = cur
+                    self.sentinel.prev = new_node
                     break
                 cur = cur.next
 
@@ -176,23 +181,27 @@ class CircularList:
         Removes the node at the front of the list
         """
         # if the list is empty, throw an error
-        if self.sentinel.next == self.sentinel:
+        if self.sentinel.next is self.sentinel:
             raise CDLLException
         else:
+            # update the one after the front's prev pointer
+            self.sentinel.next.next.prev = self.sentinel
+            # update the front to skip over the current front
             self.sentinel.next = self.sentinel.next.next
-            self.sentinel.next.next.prev = self.sentinel.next
 
     def remove_back(self) -> None:
         """
         Removes the last node from the list
         """
         # if the list is empty, throw an error
-        if self.sentinel.next == self.sentinel:
+        if self.sentinel.next is self.sentinel:
             raise CDLLException
         else:
             cur = self.sentinel.next
-            while cur.next.next:
-                if cur.next.next == self.sentinel:
+            while cur.next is not self.sentinel:
+                # stop at second to last
+                if cur.next.next is self.sentinel:
+                    # skip over last
                     cur.next = self.sentinel
                     self.sentinel.prev = cur
                     break
@@ -200,67 +209,189 @@ class CircularList:
 
     def remove_at_index(self, index: int) -> None:
         """
-        TODO: Write this implementation
+        Removes the node from the list given its index. Index 0 refers to the beginning of the list
         """
-        pass
+        # if the index is invalid, throw error
+        if index < 0 or index > self.length() - 1:
+            raise CDLLException
+
+        if index == 0:
+            self.remove_front()
+            return
+
+        if index == self.length() - 1:
+            self.remove_back()
+            return
+
+        # traverse the list until the index is reached and change the pointers
+        cur = self.sentinel.next
+        i = 0
+        while i < self.length():
+            if i == index:
+                cur.prev.next = cur.next
+                cur.next.prev = cur.prev
+                break
+            cur = cur.next
+            i += 1
 
     def get_front(self) -> object:
         """
-        TODO: Write this implementation
+        Returns value from the first node in the list without removing it
         """
-        pass
+        # if the list is empty, throw and error
+        if self.sentinel.next is self.sentinel:
+            raise CDLLException
+        else:
+            return self.sentinel.next.value
 
     def get_back(self) -> object:
         """
-        TODO: Write this implementation
+        Returns value from the last node in the list without removing it
         """
-        pass
+        # if the list is empty, throw and error
+        if self.sentinel.next is self.sentinel:
+            raise CDLLException
+        else:
+            cur = self.sentinel.next
+            while cur.next:
+                if cur.next is self.sentinel:
+                    return cur.value
+                cur = cur.next
 
     def remove(self, value: object) -> bool:
         """
-        TODO: Write this implementation
+        Removes the first node in the list that matches the provided “value” object.
+        Method returns True if some node was actually removed from the list.
+        Otherwise it returns False
         """
-        pass
+        cur = self.sentinel.next
+        i = 0
+        while i < self.length():
+            if cur.value == value:
+                cur.prev.next = cur.next
+                cur.next.prev = cur.prev
+                return True
+            cur = cur.next
+            i += 1
+
+        return False
 
     def count(self, value: object) -> int:
         """
-        TODO: Write this implementation
+        Counts the number of elements in the list that match the provided “value” object
         """
-        pass
+        count = 0
+
+        if self.sentinel.prev.value == value:
+            count += 1
+
+        cur = self.sentinel.next
+        while cur.next is not self.sentinel:
+            if cur.value == value:
+                count += 1
+            cur = cur.next
+
+        return count
 
     def swap_pairs(self, index1: int, index2: int) -> None:
         """
-        TODO: Write this implementation
+        Swaps two nodes given their indices by changing node pointers.
         """
-        pass
+        # if indices are invalid, throw error
+        if index1 < 0 or index1 > self.length() - 1 or index2 < 0 or index2 > self.length() - 1:
+            raise CDLLException
+
+        cur = self.sentinel.next
+        node1 = None
+        node2 = None
+        i = 0
+        while cur is not self.sentinel:
+            if i == index1:
+                node1 = cur
+            if i == index2:
+                node2 = cur
+            if node1 and node2:
+                # update node2 siblings
+                node2.prev.next = node1
+                node2.next.prev = node1
+                # update node1 siblings
+                node1.prev.next = node2
+                node1.next.prev = node2
+                # swap
+                new_node2_next = node1.next
+                new_node2_prev = node1.prev
+                node1.next = node2.next
+                node1.prev = node2.prev
+                node2.next = new_node2_next
+                node2.prev = new_node2_prev
+                
+                break
+                
+            cur = cur.next
+            i += 1
 
     def reverse(self) -> None:
         """
-        TODO: Write this implementation
+        Reverses the order of the nodes in the list. The reversal must be done “in
+        place” without creating any copies of existing nodes or an entire existing list.
+        Done by changing node pointers.
         """
-        pass
+        cur = self.sentinel.next
+        while cur is not self.sentinel:
+            next_node = cur.next
+            prev_node = cur.prev
+
+            cur.next = prev_node
+            cur.prev = next_node
+      
+            cur = next_node
 
     def sort(self) -> None:
         """
-        TODO: Write this implementation
-        """
-        pass
+        Sorts the content of the list in non-descending order. The sorting is done
+        “in place” without creating any copies of existing nodes or an entire existing list.
+        """ 
+  
+        # Traverse through all nodes and change pointers to swap orders
+        # cur = self.sentinel.next
+        # i = 0
+        # j = 0
+        # while i < self.length() - 1:
+        #     while j < self.length() - i - 1:
+
 
     def rotate(self, steps: int) -> None:
         """
-        TODO: Write this implementation
+        Rotates the linked list by shifting positions of its elements right or left steps
+        number of times. If steps is a positive integer, elements should be rotated right. Otherwise,
+        rotation is to the left. All work is done “in place” without creating any copies of
+        existing nodes or an entire existing list.
         """
         pass
 
     def remove_duplicates(self) -> None:
         """
-        TODO: Write this implementation
+        deletes all nodes that have duplicate values from a sorted linked list, leaving
+        only nodes with distinct values. Done “in place” without creating any copies
+        of existing nodes or an entire existing list.
         """
-        pass
+        cur = self.sentinel.next.next
+        prev = self.sentinel.next
+        i = 1
+        while cur is not self.sentinel:
+            if cur.value == prev.value:
+                self.remove_at_index(i)
+            else:
+                i += 1
+            prev = cur
+            cur = cur.next
 
     def odd_even(self) -> None:
         """
-        TODO: Write this implementation
+        Regroups list nodes by first grouping all ODD nodes together followed by all
+        EVEN nodes (references are to node numbers in the list, starting from 1, not their values).
+        All work must be done “in place” without creating any copies of existing nodes or an entire
+        existing list.
         """
         pass
 
@@ -283,17 +414,17 @@ if __name__ == '__main__':
     # lst.add_back('B')
     # lst.add_back('A')
     # print(lst)
-    #
-    print('\n# insert_at_index example 1')
-    lst = CircularList()
-    test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
-    for index, value in test_cases:
-        print('Insert of', value, 'at', index, ': ', end='')
-        try:
-            lst.insert_at_index(index, value)
-            print(lst)
-        except Exception as e:
-            print(type(e))
+    
+    # print('\n# insert_at_index example 1')
+    # lst = CircularList()
+    # test_cases = [(0, 'A'), (0, 'B'), (1, 'C'), (3, 'D'), (-1, 'E'), (5, 'F')]
+    # for index, value in test_cases:
+    #     print('Insert of', value, 'at', index, ': ', end='')
+    #     try:
+    #         lst.insert_at_index(index, value)
+    #         print(lst)
+    #     except Exception as e:
+    #         print(type(e))
     #
     # print('\n# remove_front example 1')
     # lst = CircularList([1, 2])
@@ -332,7 +463,7 @@ if __name__ == '__main__':
     #     except Exception as e:
     #         print(type(e))
     # print(lst)
-    #
+    
     # print('\n# get_front example 1')
     # lst = CircularList(['A', 'B'])
     # print(lst.get_front())
@@ -367,7 +498,7 @@ if __name__ == '__main__':
     # lst = CircularList([0, 1, 2, 3, 4, 5, 6])
     # test_cases = ((0, 6), (0, 7), (-1, 6), (1, 5),
     #               (4, 2), (3, 3), (1, 2), (2, 1))
-    #
+    
     # for i, j in test_cases:
     #     print('Swap nodes ', i, j, ' ', end='')
     #     try:
@@ -376,53 +507,53 @@ if __name__ == '__main__':
     #     except Exception as e:
     #         print(type(e))
     #
-    # print('\n# reverse example 1')
-    # test_cases = (
-    #     [1, 2, 3, 3, 4, 5],
-    #     [1, 2, 3, 4, 5],
-    #     ['A', 'B', 'C', 'D']
-    # )
-    # for case in test_cases:
-    #     lst = CircularList(case)
-    #     lst.reverse()
-    #     print(lst)
-    #
-    # print('\n# reverse example 2')
-    # lst = CircularList()
-    # print(lst)
-    # lst.reverse()
-    # print(lst)
-    # lst.add_back(2)
-    # lst.add_back(3)
-    # lst.add_front(1)
-    # lst.reverse()
-    # print(lst)
-    #
-    # print('\n# reverse example 3')
-    #
-    #
-    # class Student:
-    #     def __init__(self, name, age):
-    #         self.name, self.age = name, age
-    #
-    #     def __eq__(self, other):
-    #         return self.age == other.age
-    #
-    #     def __str__(self):
-    #         return str(self.name) + ' ' + str(self.age)
-    #
-    #
-    # s1, s2 = Student('John', 20), Student('Andy', 20)
-    # lst = CircularList([s1, s2])
-    # print(lst)
-    # lst.reverse()
-    # print(lst)
-    # print(s1 == s2)
-    #
-    # print('\n# reverse example 4')
-    # lst = CircularList([1, 'A'])
-    # lst.reverse()
-    # print(lst)
+    print('\n# reverse example 1')
+    test_cases = (
+        [1, 2, 3, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+        ['A', 'B', 'C', 'D']
+    )
+    for case in test_cases:
+        lst = CircularList(case)
+        lst.reverse()
+        print(lst)
+    
+    print('\n# reverse example 2')
+    lst = CircularList()
+    print(lst)
+    lst.reverse()
+    print(lst)
+    lst.add_back(2)
+    lst.add_back(3)
+    lst.add_front(1)
+    lst.reverse()
+    print(lst)
+    
+    print('\n# reverse example 3')
+    
+    
+    class Student:
+        def __init__(self, name, age):
+            self.name, self.age = name, age
+    
+        def __eq__(self, other):
+            return self.age == other.age
+    
+        def __str__(self):
+            return str(self.name) + ' ' + str(self.age)
+    
+    
+    s1, s2 = Student('John', 20), Student('Andy', 20)
+    lst = CircularList([s1, s2])
+    print(lst)
+    lst.reverse()
+    print(lst)
+    print(s1 == s2)
+    
+    print('\n# reverse example 4')
+    lst = CircularList([1, 'A'])
+    lst.reverse()
+    print(lst)
     #
     # print('\n# sort example 1')
     # test_cases = (
@@ -463,13 +594,13 @@ if __name__ == '__main__':
     #     list("abccd"),
     #     list("005BCDDEEFI")
     # )
-    #
+    
     # for case in test_cases:
     #     lst = CircularList(case)
     #     print('INPUT :', lst)
     #     lst.remove_duplicates()
     #     print('OUTPUT:', lst)
-    #
+    
     # print('\n# odd_even example 1')
     # test_cases = (
     #     [1, 2, 3, 4, 5], list('ABCDE'),
@@ -477,7 +608,7 @@ if __name__ == '__main__':
     #     [100, 200, 300, 400],
     #     [10, 'A', 20, 'B', 30, 'C', 40, 'D', 50, 'E']
     # )
-    #
+    
     # for case in test_cases:
     #     lst = CircularList(case)
     #     print('INPUT :', lst)

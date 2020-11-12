@@ -4,7 +4,7 @@
 # Description: Implement a Queue ADT class using the MaxStack ADT from part 2
 
 
-from max_stack_sll import *
+from max_stack_sll import MaxStack
 
 
 class QueueException(Exception):
@@ -51,37 +51,39 @@ class Queue:
 
     def enqueue(self, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new value to the end of the queue
         """
-        pass
+        while not self.s1.is_empty():
+            self.s2.push(self.s1.pop())
+        self.s1.push(value)
+        while not self.s2.is_empty():
+            self.s1.push(self.s2.pop())
 
     def dequeue(self) -> object:
         """
-        TODO: Write this implementation
+        removes and returns the value from the beginning of the queue
         """
-        pass
+        return self.s1.pop()
+            
 
 # BASIC TESTING
 if __name__ == "__main__":
     pass
 
-    # print('\n# enqueue example 1')
-    # q = Queue()
-    # print(q)
-    # for value in [1, 2, 3, 4, 5]:
-    #     q.enqueue(value)
-    # print(q)
-    #
-    # print('\n# dequeue example 1')
-    # q = Queue()
-    # for value in [1, 2, 3, 4, 5]:
-    #     q.enqueue(value)
-    # print(q)
-    # for i in range(6):
-    #     try:
-    #         print(q.dequeue(), q)
-    #     except Exception as e:
-    #         print("No elements in queue", type(e))
-
-
-
+    print('\n# enqueue example 1')
+    q = Queue()
+    print(q)
+    for value in [1, 2, 3, 4, 5]:
+        q.enqueue(value)
+    print(q)
+    
+    print('\n# dequeue example 1')
+    q = Queue()
+    for value in [1, 2, 3, 4, 5]:
+        q.enqueue(value)
+    print(q)
+    for i in range(6):
+        try:
+            print(q.dequeue(), q)
+        except Exception as e:
+            print("No elements in queue", type(e))

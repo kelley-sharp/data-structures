@@ -5,6 +5,7 @@
 
 from sll import LinkedList
 
+
 class StackException(Exception):
     """
     Custom exception to be used by MaxStack Class
@@ -51,6 +52,15 @@ class MaxStack:
         """
         Adds a new element to the top of the stack
         """
+        # first add to the max stack based on value comparison
+        if self.is_empty():
+            self.sll_max.add_front(value)
+        elif value > self.get_max():
+            self.sll_max.add_front(value)
+        elif value <= self.get_max():
+            self.sll_max.add_front(self.get_max())
+
+        # finally add to the regular stack
         self.sll_val.add_front(value)
 
     def pop(self) -> object:
@@ -61,8 +71,11 @@ class MaxStack:
         if self.is_empty():
             raise StackException
         else:
+            # cache return val
             return_val = self.sll_val.get_front()
+            # remove front from both
             self.sll_val.remove_front()
+            self.sll_max.remove_front()
             return return_val
 
     def top(self) -> object:
@@ -82,36 +95,34 @@ class MaxStack:
         if self.is_empty():
             raise StackException
         else:
-            cur = 
+            return self.sll_max.get_front()
 
 
 # BASIC TESTING
 if __name__ == "__main__":
     pass
 
-    # print('\n# push example 1')
-    # s = MaxStack()
-    # print(s)
-    # for value in [1, 2, 3, 4, 5]:
-    #     s.push(value)
-    # print(s)
-    #
-    #
-    # print('\n# pop example 1')
-    # s = MaxStack()
-    # try:
-    #     print(s.pop())
-    # except Exception as e:
-    #     print("Exception:", type(e))
-    # for value in [1, 2, 3, 4, 5]:
-    #     s.push(value)
-    # for i in range(6):
-    #     try:
-    #         print(s.pop())
-    #     except Exception as e:
-    #         print("Exception:", type(e))
-    #
-    #
+    print('\n# push example 1')
+    s = MaxStack()
+    print(s)
+    for value in [1, 2, 3, 4, 5]:
+        s.push(value)
+    print(s)
+
+    print('\n# pop example 1')
+    s = MaxStack()
+    try:
+        print(s.pop())
+    except Exception as e:
+        print("Exception:", type(e))
+    for value in [1, 2, 3, 4, 5]:
+        s.push(value)
+    for i in range(6):
+        try:
+            print(s.pop())
+        except Exception as e:
+            print("Exception:", type(e))
+    
     print('\n# top example 1')
     s = MaxStack()
     try:
@@ -124,21 +135,21 @@ if __name__ == "__main__":
     print(s.top())
     print(s.top())
     print(s)
-    #
-    # print('\n# get_max example 1')
-    # s = MaxStack()
-    # for value in [1, -20, 15, 21, 21, 40, 50]:
-    #     print(s, ' ', end='')
-    #     try:
-    #         print(s.get_max())
-    #     except Exception as e:
-    #         print(type(e))
-    #     s.push(value)
-    # while not s.is_empty():
-    #     print(s.size(), end='')
-    #     print(' Pop value:', s.pop(), ' get_max after: ', end='')
-    #     try:
-    #         print(s.get_max())
-    #     except Exception as e:
-    #         print(type(e))
+    
+    print('\n# get_max example 1')
+    s = MaxStack()
+    for value in [1, -20, 15, 21, 21, 40, 50]:
+        print(s, ' ', end='')
+        try:
+            print(s.get_max())
+        except Exception as e:
+            print(type(e))
+        s.push(value)
+    while not s.is_empty():
+        print(s.size(), end='')
+        print(' Pop value:', s.pop(), ' get_max after: ', end='')
+        try:
+            print(s.get_max())
+        except Exception as e:
+            print(type(e))
 
