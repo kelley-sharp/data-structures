@@ -23,7 +23,7 @@ class DynamicArray:
         DO NOT CHANGE THIS METHOD IN ANY WAY
         """
         self.size = 0
-        self.capacity = 4
+        self.capacity = 1
         self.first = 0  # do not use / change this value
         self.data = StaticArray(self.capacity)
 

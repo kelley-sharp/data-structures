@@ -165,3 +165,4 @@ if __name__ == "__main__":
     bag1 = Bag([100, 200, 300, 200])
     bag2 = Bag([100, 200, 30, 100])
     print(bag1.equal(bag2))
+
