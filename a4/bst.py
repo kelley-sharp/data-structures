@@ -131,36 +131,60 @@ class BST:
         Adds the given value to the tree
         """
         def add_node(cur_root, value):
+            """
+            Recursive helper method that adds a node to an existing tree
+            maintaining the BST property
+            """
             if cur_root.value <= value:
+                # add the new node at the next available space to the right
                 if cur_root.right is None:
                     cur_root.right = TreeNode(value)
                     return
-
+                # if no space is available, recurse to search the next sub tree
                 add_node(cur_root.right, value)
             else:
+                # add the new node at the next available space to the left
                 if cur_root.left is None:
                     cur_root.left = TreeNode(value)
                     return
 
                 add_node(cur_root.left, value)
-
+        # if there are no nodes in the tree, create a root node with the given value
         if self.root is None:
             self.root = TreeNode(value)
             return
-
+        # otherwise start searching for the next available space
         add_node(self.root, value)
 
     def contains(self, value: object) -> bool:
         """
-        TODO: Write this implementation
+        Returns True if the value is in the BinaryTree or False if it is not
         """
-        return True
+        def search(cur_node, value):
+            """
+            Recursive helper method that does a binary search for a node
+            with the given value
+            """
+            if cur_node is None:
+                return False
+            elif cur_node.value is value:
+                return True
+            elif value > cur_node.value:
+                search(cur_node.right, value)
+            else:
+                search(cur_node.left, value)
+
+        # if there are no nodes in the tree, return False
+        if self.root is None:
+            return False
+        # otherwise start searching for the node with the given value
+        search(self.root, value)
 
     def get_first(self) -> object:
         """
-        TODO: Write this implementation
+        Returns the value stored at the root node
         """
-        return None
+        pass
 
     def remove_first(self) -> bool:
         """
@@ -245,48 +269,48 @@ class BST:
 # BASIC TESTING - PDF EXAMPLES
 
 if __name__ == '__main__':
-    """ add() example #1 """
-    print("\nPDF - method add() example 1")
-    print("----------------------------")
-    tree = BST()
-    print(tree)
-    tree.add(10)
-    tree.add(15)
-    tree.add(5)
-    print(tree)
-    tree.add(15)
-    tree.add(15)
-    print(tree)
-    tree.add(5)
-    print(tree)
-
-    """ add() example 2 """
-    print("\nPDF - method add() example 2")
-    print("----------------------------")
-    tree = BST()
-    tree.add(10)
-    tree.add(10)
-    print(tree)
-    tree.add(-1)
-    print(tree)
-    tree.add(5)
-    print(tree)
-    tree.add(-1)
-    print(tree)
-
-    # """ contains() example 1 """
-    # print("\nPDF - method contains() example 1")
-    # print("---------------------------------")
-    # tree = BST([10, 5, 15])
-    # print(tree.contains(15))
-    # print(tree.contains(-10))
-    # print(tree.contains(15))
-
-    # """ contains() example 2 """
-    # print("\nPDF - method contains() example 2")
-    # print("---------------------------------")
+    # """ add() example #1 """
+    # print("\nPDF - method add() example 1")
+    # print("----------------------------")
     # tree = BST()
-    # print(tree.contains(0))
+    # print(tree)
+    # tree.add(10)
+    # tree.add(15)
+    # tree.add(5)
+    # print(tree)
+    # tree.add(15)
+    # tree.add(15)
+    # print(tree)
+    # tree.add(5)
+    # print(tree)
+
+    # """ add() example 2 """
+    # print("\nPDF - method add() example 2")
+    # print("----------------------------")
+    # tree = BST()
+    # tree.add(10)
+    # tree.add(10)
+    # print(tree)
+    # tree.add(-1)
+    # print(tree)
+    # tree.add(5)
+    # print(tree)
+    # tree.add(-1)
+    # print(tree)
+
+    """ contains() example 1 """
+    print("\nPDF - method contains() example 1")
+    print("---------------------------------")
+    tree = BST([10, 5, 15])
+    print(tree.contains(15))
+    print(tree.contains(-10))
+    print(tree.contains(15))
+
+    """ contains() example 2 """
+    print("\nPDF - method contains() example 2")
+    print("---------------------------------")
+    tree = BST()
+    print(tree.contains(0))
 
     # """ get_first() example 1 """
     # print("\nPDF - method get_first() example 1")
