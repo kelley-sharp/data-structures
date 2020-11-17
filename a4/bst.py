@@ -178,7 +178,7 @@ class BST:
         if self.root is None:
             return False
 
-        # otherwise start searching for the node with the given value
+        # otherwise search for the node with the given value
         node = self.find(self.root, value)
         if node:
             return True
@@ -202,16 +202,58 @@ class BST:
         # if the tree is empty
         if self.root is None:
             return False
-        # find the root node's in order successor
-        pass
+
+        # if root has no children, empty the tree
+        elif self.root.left is None and self.root.right is None:
+            self.root = None
+            return True
+
+        # if there is no right node, replace with the left node
+        elif self.root.right is None:
+            self.root = self.root.left
+            return True
+
+        else:
+            # if there is a right node:
+
+            # if the right node has no left node, replace the root with the right node
+            # and assign it the root's left node as it's left node
+            if self.root.right.left is None:
+                temp = self.root.left
+                self.root = self.root.right
+                self.root.left = temp
+                return True
+
+            # find the root node's in order successor and the successor's parent
+            cur_node = self.root.right
+            ps = None
+            s = None
+
+            while cur_node.left:
+                if cur_node.left.left is None:
+                    ps = cur_node
+                    s = cur_node.left
+                    break
+                else:
+                    cur_node = cur_node.left
+
+            # replace the root node with it's in order successor
+            temp = self.root.left
+            ps.left = s.right
+            self.root = s
+            self.root.right = ps
+            self.root.left = temp
+
+            return True
 
     def remove(self, value) -> bool:
         """
         TODO: Write this implementation
         """
         # identify the node to be removed
-        node = self.search(self.root, value)
+        node = self.find(self.root, value)
         # identify the parent of the node
+        parent_node = node
         # identify the in order successor
         # go to the right hand side child
         # go as far left as possible
@@ -317,19 +359,19 @@ if __name__ == '__main__':
     # tree.add(-1)
     # print(tree)
 
-    """ contains() example 1 """
-    print("\nPDF - method contains() example 1")
-    print("---------------------------------")
-    tree = BST([10, 5, 15])
-    print(tree.contains(15))
-    print(tree.contains(-10))
-    print(tree.contains(15))
+    # """ contains() example 1 """
+    # print("\nPDF - method contains() example 1")
+    # print("---------------------------------")
+    # tree = BST([10, 5, 15])
+    # print(tree.contains(15))
+    # print(tree.contains(-10))
+    # print(tree.contains(15))
 
-    """ contains() example 2 """
-    print("\nPDF - method contains() example 2")
-    print("---------------------------------")
-    tree = BST()
-    print(tree.contains(0))
+    # """ contains() example 2 """
+    # print("\nPDF - method contains() example 2")
+    # print("---------------------------------")
+    # tree = BST()
+    # print(tree.contains(0))
 
     # """ get_first() example 1 """
     # print("\nPDF - method get_first() example 1")
@@ -384,16 +426,16 @@ if __name__ == '__main__':
     # print(tree.remove_first())
     # print(tree)
 
-    # """ remove_first() example 3 """
-    # print("\nPDF - method remove_first() example 3")
-    # print("-------------------------------------")
-    # tree = BST([10, 10, -1, 5, -1])
-    # print(tree.remove_first(), tree)
-    # print(tree.remove_first(), tree)
-    # print(tree.remove_first(), tree)
-    # print(tree.remove_first(), tree)
-    # print(tree.remove_first(), tree)
-    # print(tree.remove_first(), tree)
+    """ remove_first() example 3 """
+    print("\nPDF - method remove_first() example 3")
+    print("-------------------------------------")
+    tree = BST([10, 10, -1, 5, -1])
+    print(tree.remove_first(), tree)
+    print(tree.remove_first(), tree)
+    print(tree.remove_first(), tree)
+    print(tree.remove_first(), tree)
+    print(tree.remove_first(), tree)
+    print(tree.remove_first(), tree)
 
     # """ Traversal methods example 1 """
     # print("\nPDF - traversal methods example 1")
