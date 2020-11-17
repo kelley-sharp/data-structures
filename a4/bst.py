@@ -158,7 +158,7 @@ class BST:
 
     def find(self, cur_node, value):
         """
-        Recursive helper method that does a binary find for a node
+        Recursive helper method that does a binary search for a node
         with the given value
         """
         if cur_node is None:
@@ -248,16 +248,92 @@ class BST:
 
     def remove(self, value) -> bool:
         """
-        TODO: Write this implementation
+        Removes the first instance of the object with the given value and
+        returns True or returns False if no object is removed
         """
+
+        def find_parent(cur_node, child_node_value):
+            """
+            Recursive helper function to find the parent of given child node
+            """
+            if cur_node.right.value == value or cur_node.left.value == value:
+                return cur_node
+            else:
+                return find_parent(cur_node.right, child_node_value)
+                return find_parent(cur_node.left, child_node_value)
+
+        # if the tree is empty
+        if self.root is None:
+            return False
+
+        # if the node to be removed is the root node call remove_first
+        if self.root.value == value:
+            self.remove_first()
+            return True
+
         # identify the node to be removed
         node = self.find(self.root, value)
+
+        # if the value was not in the tree
+        if node is None:
+            return False
+
         # identify the parent of the node
-        parent_node = node
+        pn = find_parent(self.root, value)
+
+        # if node does not have a right or left node
+        if node.right is None and node.left is None:
+            # if node is a right child of the parent
+            if pn.right is node:
+                pn.right = None
+                return
+            # if node is a left child of the parent
+            if pn.left is node:
+                pn.left = None
+                return
+
+        # if node has only a left child, and no right child
+        if node.left and node.right is None:
+            # if node is a left child of parent node
+            if pn.left is node:
+                pn.left = node.left
+            # if node is a right child of parent node
+            if pn.right is node:
+                pn.right = node.left
+
+        # if node has a right node:
         # identify the in order successor
-        # go to the right hand side child
-        # go as far left as possible
-        pass
+        cur_node = node.right
+        ps = None
+        s = None
+
+        while cur_node.left:
+            if cur_node.left.left is None:
+                ps = cur_node
+                s = cur_node.left
+                break
+            else:
+                cur_node = cur_node.left
+
+        # if node has only a right child, and no left child
+        if node.right and node.left is None:
+            # if node is a left child of parent node
+            if pn.left is node:
+                pn.left = node.right
+            # if node is a right child of parent node
+            if pn.right is node:
+                pn.right = node.right
+
+        # if node has both a left child and right child
+        if node.right and node.left:
+            node.value = s.value
+            # if the in order successor has a right child
+            if s.right:
+                ps.left = s.right
+            else:
+                ps.left = None
+
+        return True
 
     def pre_order_traversal(self) -> Queue:
         """
@@ -384,33 +460,33 @@ if __name__ == '__main__':
     # print(tree.get_first())
     # print(tree)
 
-    # """ remove() example 1 """
-    # print("\nPDF - method remove() example 1")
-    # print("-------------------------------")
-    # tree = BST([10, 5, 15])
-    # print(tree.remove(7))
-    # print(tree.remove(15))
-    # print(tree.remove(15))
+    """ remove() example 1 """
+    print("\nPDF - method remove() example 1")
+    print("-------------------------------")
+    tree = BST([10, 5, 15])
+    print(tree.remove(7))
+    print(tree.remove(15))
+    print(tree.remove(15))
 
-    # """ remove() example 2 """
-    # print("\nPDF - method remove() example 2")
-    # print("-------------------------------")
-    # tree = BST([10, 20, 5, 15, 17, 7, 12])
-    # print(tree.remove(20))
-    # print(tree)
+    """ remove() example 2 """
+    print("\nPDF - method remove() example 2")
+    print("-------------------------------")
+    tree = BST([10, 20, 5, 15, 17, 7, 12])
+    print(tree.remove(20))
+    print(tree)
 
-    # """ remove() example 3 """
-    # print("\nPDF - method remove() example 3")
-    # print("-------------------------------")
-    # tree = BST([10, 5, 20, 18, 12, 7, 27, 22, 18, 24, 22, 30])
-    # print(tree.remove(20))
-    # print(tree)
-    # # comment out the following lines
-    # # if you have not yet implemented traversal methods
-    # print(tree.pre_order_traversal())
-    # print(tree.in_order_traversal())
-    # print(tree.post_order_traversal())
-    # print(tree.by_level_traversal())
+    """ remove() example 3 """
+    print("\nPDF - method remove() example 3")
+    print("-------------------------------")
+    tree = BST([10, 5, 20, 18, 12, 7, 27, 22, 18, 24, 22, 30])
+    print(tree.remove(20))
+    print(tree)
+    # comment out the following lines
+    # if you have not yet implemented traversal methods
+    print(tree.pre_order_traversal())
+    print(tree.in_order_traversal())
+    print(tree.post_order_traversal())
+    print(tree.by_level_traversal())
 
     # """ remove_first() example 1 """
     # print("\nPDF - method remove_first() example 1")
