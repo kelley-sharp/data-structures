@@ -184,7 +184,11 @@ class BST:
         """
         Returns the value stored at the root node
         """
-        pass
+        # if the tree is empty return None
+        if self.root is None:
+            return None
+        else:
+            return self.root.value
 
     def remove_first(self) -> bool:
         """
@@ -298,30 +302,30 @@ if __name__ == '__main__':
     # tree.add(-1)
     # print(tree)
 
-    """ contains() example 1 """
-    print("\nPDF - method contains() example 1")
-    print("---------------------------------")
-    tree = BST([10, 5, 15])
-    print(tree.contains(15))
-    print(tree.contains(-10))
-    print(tree.contains(15))
+    # """ contains() example 1 """
+    # print("\nPDF - method contains() example 1")
+    # print("---------------------------------")
+    # tree = BST([10, 5, 15])
+    # print(tree.contains(15))
+    # print(tree.contains(-10))
+    # print(tree.contains(15))
 
-    """ contains() example 2 """
-    print("\nPDF - method contains() example 2")
-    print("---------------------------------")
-    tree = BST()
-    print(tree.contains(0))
-
-    # """ get_first() example 1 """
-    # print("\nPDF - method get_first() example 1")
-    # print("----------------------------------")
+    # """ contains() example 2 """
+    # print("\nPDF - method contains() example 2")
+    # print("---------------------------------")
     # tree = BST()
-    # print(tree.get_first())
-    # tree.add(10)
-    # tree.add(15)
-    # tree.add(5)
-    # print(tree.get_first())
-    # print(tree)
+    # print(tree.contains(0))
+
+    """ get_first() example 1 """
+    print("\nPDF - method get_first() example 1")
+    print("----------------------------------")
+    tree = BST()
+    print(tree.get_first())
+    tree.add(10)
+    tree.add(15)
+    tree.add(5)
+    print(tree.get_first())
+    print(tree)
 
     # """ remove() example 1 """
     # print("\nPDF - method remove() example 1")
