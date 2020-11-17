@@ -156,29 +156,34 @@ class BST:
         # otherwise start searching for the next available space
         add_node(self.root, value)
 
+    def find(self, cur_node, value):
+        """
+        Recursive helper method that does a binary find for a node
+        with the given value
+        """
+        if cur_node is None:
+            return None
+        elif cur_node.value == value:
+            return cur_node
+        elif value > cur_node.value:
+            return self.find(cur_node.right, value)
+        else:
+            return self.find(cur_node.left, value)
+
     def contains(self, value: object) -> bool:
         """
         Returns True if the value is in the BinaryTree or False if it is not
         """
-        def search(cur_node, value):
-            """
-            Recursive helper method that does a binary search for a node
-            with the given value
-            """
-            if cur_node is None:
-                return False
-            elif cur_node.value is value:
-                return True
-            elif value > cur_node.value:
-                search(cur_node.right, value)
-            else:
-                search(cur_node.left, value)
-
         # if there are no nodes in the tree, return False
         if self.root is None:
             return False
+
         # otherwise start searching for the node with the given value
-        search(self.root, value)
+        node = self.find(self.root, value)
+        if node:
+            return True
+
+        return False
 
     def get_first(self) -> object:
         """
@@ -192,15 +197,25 @@ class BST:
 
     def remove_first(self) -> bool:
         """
-        TODO: Write this implementation
+        Removes the root node
         """
-        return True
+        # if the tree is empty
+        if self.root is None:
+            return False
+        # find the root node's in order successor
+        pass
 
     def remove(self, value) -> bool:
         """
         TODO: Write this implementation
         """
-        return True
+        # identify the node to be removed
+        node = self.search(self.root, value)
+        # identify the parent of the node
+        # identify the in order successor
+        # go to the right hand side child
+        # go as far left as possible
+        pass
 
     def pre_order_traversal(self) -> Queue:
         """
@@ -302,30 +317,30 @@ if __name__ == '__main__':
     # tree.add(-1)
     # print(tree)
 
-    # """ contains() example 1 """
-    # print("\nPDF - method contains() example 1")
-    # print("---------------------------------")
-    # tree = BST([10, 5, 15])
-    # print(tree.contains(15))
-    # print(tree.contains(-10))
-    # print(tree.contains(15))
+    """ contains() example 1 """
+    print("\nPDF - method contains() example 1")
+    print("---------------------------------")
+    tree = BST([10, 5, 15])
+    print(tree.contains(15))
+    print(tree.contains(-10))
+    print(tree.contains(15))
 
-    # """ contains() example 2 """
-    # print("\nPDF - method contains() example 2")
-    # print("---------------------------------")
-    # tree = BST()
-    # print(tree.contains(0))
-
-    """ get_first() example 1 """
-    print("\nPDF - method get_first() example 1")
-    print("----------------------------------")
+    """ contains() example 2 """
+    print("\nPDF - method contains() example 2")
+    print("---------------------------------")
     tree = BST()
-    print(tree.get_first())
-    tree.add(10)
-    tree.add(15)
-    tree.add(5)
-    print(tree.get_first())
-    print(tree)
+    print(tree.contains(0))
+
+    # """ get_first() example 1 """
+    # print("\nPDF - method get_first() example 1")
+    # print("----------------------------------")
+    # tree = BST()
+    # print(tree.get_first())
+    # tree.add(10)
+    # tree.add(15)
+    # tree.add(5)
+    # print(tree.get_first())
+    # print(tree)
 
     # """ remove() example 1 """
     # print("\nPDF - method remove() example 1")
