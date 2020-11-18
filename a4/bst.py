@@ -389,20 +389,36 @@ class BST:
         post(self.root)
         return result
 
-    # def by_level_traversal(self) -> Queue:
-    #     """
-    #     Returns a queue object of values of nodes visited after a breath first traversal
-    #     """
-    #     result = Queue()
-    #     q.enqueue(self.root)
-    #     cur_node = q.dequeue()
-    #     while (result.size > 0):
-    #         curr = q.dequeue()
-    #         # visit
-    #         # if left
-    #         result.enqueue(node.left.value)
-    #         # if right
-    #         result.enqueue(node.right.value)
+    def by_level_traversal(self) -> Queue:
+        """
+        Returns a queue object of values of nodes visited after a breadth first traversal
+        """
+
+        def level(node):
+            """
+            Helper method to traverse tree by level
+            """
+            # keep a queue that resulting values will be stored int
+            result = Queue()
+
+            # keep a queue to use while traversing
+            q = Queue()
+
+            # enqueue root node to initialize with a value
+            if node is self.root:
+                q.enqueue(node)
+
+            while (not q.is_empty()):
+                curr = q.dequeue()
+                result.enqueue(curr)
+                if curr.left is not None:
+                    q.enqueue(curr.left)
+                if curr.right is not None:
+                    q.enqueue(curr.right)
+
+            return result
+
+        return level(self.root)
 
     def is_full(self) -> bool:
         """
@@ -440,15 +456,37 @@ class BST:
 
     def height(self) -> int:
         """
-        use trav
+        Returns the height of the binary tree, returns -1 if the tree is empty
         """
-        return -1
+        # if tree is empty
+        if self.root is None:
+            return -1
+
+        # if tree only consists of root node
+        if self.root.right is None and self.root.left is None:
+            return 0
+
+            def mod_by_level_traversal(node):
+                """
+                Recursive helper method that does a by level traversal and keeps count
+                each time a level of values is added to the queue
+                """
+                count = 0
+                return count
+
+        height = mod_by_level_traversal(self.root)
+        return height
 
     def count_leaves(self) -> int:
         """
-        use trav
+        Returns the number of nodes in the tree that have no children
         """
-        return 0
+        # if the tree is empty
+        # if self.root.left is None and self.root.right is None:
+        #     return 0
+
+        return -1
+
 
     def count_unique(self) -> int:
         """
@@ -568,14 +606,14 @@ if __name__ == '__main__':
     # print(tree.remove_first(), tree)
     # print(tree.remove_first(), tree)
 
-    # """ Traversal methods example 1 """
-    # print("\nPDF - traversal methods example 1")
-    # print("---------------------------------")
-    # tree = BST([10, 20, 5, 15, 17, 7, 12])
-    # print(tree.pre_order_traversal())
-    # print(tree.in_order_traversal())
-    # print(tree.post_order_traversal())
-    # print(tree.by_level_traversal())
+    """ Traversal methods example 1 """
+    print("\nPDF - traversal methods example 1")
+    print("---------------------------------")
+    tree = BST([10, 20, 5, 15, 17, 7, 12])
+    print(tree.pre_order_traversal())
+    print(tree.in_order_traversal())
+    print(tree.post_order_traversal())
+    print(tree.by_level_traversal())
 
     # """ Traversal methods example 2 """
     # print("\nPDF - traversal methods example 2")
@@ -586,32 +624,32 @@ if __name__ == '__main__':
     # print(tree.post_order_traversal())
     # print(tree.by_level_traversal())
 
-    """ Comprehensive example 1 """
-    print("\nComprehensive example 1")
-    print("-----------------------")
-    tree = BST()
-    header = 'Value   Size  Height   Leaves   Unique   '
-    header += 'Complete?  Full?    Perfect?'
-    print(header)
-    print('-' * len(header))
-    print(f'  N/A {tree.size():6} {tree.height():7} ',
-          f'{tree.count_leaves():7} {tree.count_unique():8}  ',
-          f'{str(tree.is_complete()):10}',
-          f'{str(tree.is_full()):7} ',
-          f'{str(tree.is_perfect())}')
+    # """ Comprehensive example 1 """
+    # print("\nComprehensive example 1")
+    # print("-----------------------")
+    # tree = BST()
+    # header = 'Value   Size  Height   Leaves   Unique   '
+    # header += 'Complete?  Full?    Perfect?'
+    # print(header)
+    # print('-' * len(header))
+    # print(f'  N/A {tree.size():6} {tree.height():7} ',
+    #       f'{tree.count_leaves():7} {tree.count_unique():8}  ',
+    #       f'{str(tree.is_complete()):10}',
+    #       f'{str(tree.is_full()):7} ',
+    #       f'{str(tree.is_perfect())}')
 
-    for value in [10, 5, 3, 15, 12, 8, 20, 1, 4, 9, 7]:
-        tree.add(value)
-        print(f'{value:5} {tree.size():6} {tree.height():7} ',
-              f'{tree.count_leaves():7} {tree.count_unique():8}  ',
-              f'{str(tree.is_complete()):10}',
-              f'{str(tree.is_full()):7} ',
-              f'{str(tree.is_perfect())}')
-    print()
-    print(tree.pre_order_traversal())
-    print(tree.in_order_traversal())
-    print(tree.post_order_traversal())
-    print(tree.by_level_traversal())
+    # for value in [10, 5, 3, 15, 12, 8, 20, 1, 4, 9, 7]:
+    #     tree.add(value)
+    #     print(f'{value:5} {tree.size():6} {tree.height():7} ',
+    #           f'{tree.count_leaves():7} {tree.count_unique():8}  ',
+    #           f'{str(tree.is_complete()):10}',
+    #           f'{str(tree.is_full()):7} ',
+    #           f'{str(tree.is_perfect())}')
+    # print()
+    # print(tree.pre_order_traversal())
+    # print(tree.in_order_traversal())
+    # print(tree.post_order_traversal())
+    # print(tree.by_level_traversal())
 
     # """ Comprehensive example 2 """
     # print("\nComprehensive example 2")
