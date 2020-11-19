@@ -429,7 +429,7 @@ class BST:
             """
             Recurse and check the children of each node
             """
-            # null node can count as full
+            # base case - null node can count as full
             if not node:
                 return True
             # if exactly left or right is missing, that's a violation
@@ -441,8 +441,30 @@ class BST:
 
     def is_complete(self) -> bool:
         """
-        TODO: Write this implementation
+        Determine if the BST is complete (every level except last is filled and nodes are left as possible).
         """
+        # an empty tree is complete
+        if not self.root:
+            return True
+
+        # queue up for breadth-first traversal
+        q = Queue()
+        q.enqueue(self.root)
+
+        # keep track of whether the previous node was None
+        #  since a complete tree will never have two 'None' nodes in a row
+        prev_is_none = False
+
+        while not q.is_empty():
+            cur = q.dequeue()
+            if not cur:
+                prev_is_none = True
+            else:
+                if prev_is_none:
+                    return False
+                q.enqueue(cur.left)
+                q.enqueue(cur.right)
+
         return True
 
     def is_perfect(self) -> bool:
@@ -466,7 +488,7 @@ class BST:
             """
             Recurse and check the depth of every leaf
             """
-            # an empty tree is perfect
+            # base case - an empty tree is perfect
             if not node:
                 return True
             # if both are missing we have a leaf
@@ -507,6 +529,7 @@ class BST:
         Returns the height of the binary tree, returns -1 if the tree is empty
         """
         def traverse_and_count(node, height=0):
+            # base case, empty subtree subtracts 1
             if not node:
                 return -1
             # the height is defined as the larger of the left subtree or right subtree
@@ -523,8 +546,10 @@ class BST:
             """
             Recursive helper method that traverses the tree and counts nodes without children
             """
+            # base case 1 - no node doesn't count
             if not node:
                 return 0
+            # base case 2 - node without children counts as 1 leaf
             elif node.left is None and node.right is None:
                 return 1
             else:
