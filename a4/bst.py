@@ -567,7 +567,7 @@ class BST:
         queue = self.in_order_traversal()
         if queue.is_empty():
             return 0
-    
+
         # iterate through the queue, counting the total elements
         #  and the duplicates then subtract the duplicates to get uniques
         prev = queue.dequeue()
