@@ -156,19 +156,35 @@ class BST:
         # otherwise start searching for the next available space
         add_node(self.root, value)
 
-    def find(self, cur_node, value):
+    def find(self, node, value):
         """
         Recursive helper method that does a binary search for a node
         with the given value
         """
-        if cur_node is None:
+        if node is None:
             return None
-        elif cur_node.value == value:
-            return cur_node
-        elif value > cur_node.value:
-            return self.find(cur_node.right, value)
+        elif node.value == value:
+            return node
+        elif value > node.value:
+            return self.find(node.right, value)
         else:
-            return self.find(cur_node.left, value)
+            return self.find(node.left, value)
+
+    def find_parent(self, node, child_node):
+        """
+        Recursive helper method that does a binary search for a node
+        with a child that has the given value
+        """
+        if self.root is child_node:
+            # node has no parent
+            return None
+
+        if node.left is child_node or node.right is child_node:
+            return node
+        elif child_node.value > node.value:
+            return self.find_parent(node.right, child_node)
+        else:
+            return self.find_parent(node.left, child_node)
 
     def contains(self, value: object) -> bool:
         """
@@ -252,86 +268,72 @@ class BST:
         returns True or returns False if no object is removed
         """
 
-        def find_parent(cur_node, child_node_value):
+        def find_smallest_leaf(node):
             """
-            Recursive helper function to find the parent of given child node
+            A helper method for remove to find the smallest valued node
+            (to be used in the right subtree)
             """
-            if cur_node.right.value == value or cur_node.left.value == value:
-                return cur_node
+            cur = node
+            while cur.left:
+                cur = cur.left
+            return cur
+
+        def remove_child(parent, child):
+            """
+            A helper method for remove where a parent node removes
+            either the left or right child
+            """
+            if parent.left is child:
+                parent.left = None
             else:
-                return find_parent(cur_node.right, child_node_value)
-                return find_parent(cur_node.left, child_node_value)
+                parent.right = None
 
-        # if the tree is empty
-        if self.root is None:
-            return False
+        def replace_child(parent, child, new_child):
+            """
+            A helper method for remove where a parent node replaces
+            either the left or right child with a new_child
+            """
+            if parent.left is child:
+                parent.left = new_child
+            else:
+                parent.right = new_child
 
-        # if the node to be removed is the root node call remove_first
-        if self.root.value == value:
-            self.remove_first()
-            return True
-
-        # identify the node to be removed
+        # find the node to remove first
         node = self.find(self.root, value)
-
-        # if the value was not in the tree
-        if node is None:
+        if not node:
             return False
 
-        # identify the parent of the node
-        pn = find_parent(self.root, value)
+        # find its parent node if it exists
+        parent = self.find_parent(self.root, node)
 
-        # if node does not have a right or left node
-        if node.right is None and node.left is None:
-            # if node is a right child of the parent
-            if pn.right is node:
-                pn.right = None
-                return
-            # if node is a left child of the parent
-            if pn.left is node:
-                pn.left = None
-                return
-
-        # if node has only a left child, and no right child
-        if node.left and node.right is None:
-            # if node is a left child of parent node
-            if pn.left is node:
-                pn.left = node.left
-            # if node is a right child of parent node
-            if pn.right is node:
-                pn.right = node.left
-
-        # if node has a right node:
-        # identify the in order successor
-        cur_node = node.right
-        ps = None
-        s = None
-
-        while cur_node.left:
-            if cur_node.left.left is None:
-                ps = cur_node
-                s = cur_node.left
-                break
+        # if node is a leaf we can just update parent's pointers
+        if not node.left and not node.right:
+            if parent:
+                remove_child(parent, node)
+                return True
             else:
-                cur_node = cur_node.left
-
-        # if node has only a right child, and no left child
-        if node.right and node.left is None:
-            # if node is a left child of parent node
-            if pn.left is node:
-                pn.left = node.right
-            # if node is a right child of parent node
-            if pn.right is node:
-                pn.right = node.right
-
-        # if node has both a left child and right child
-        if node.right and node.left:
-            node.value = s.value
-            # if the in order successor has a right child
-            if s.right:
-                ps.left = s.right
+                self.root = None
+        # if node has two children find the next biggest value from right and replace current node
+        elif node.left and node.right:
+            next_biggest_node = find_smallest_leaf(node.right)
+            if next_biggest_node.value == node.right.value:
+                # replace the node to be deleted with its right child
+                node.value = node.right.value
+                node.right = node.right.right
             else:
-                ps.left = None
+                # call remove on the next biggest node
+                self.remove(next_biggest_node.value)
+                # then replace the current node with the next biggest node's value
+                node.value = next_biggest_node.value
+        # in the else case, the node has one child so it can be replaced with it
+        else:
+            child_node = node.left or node.right
+
+            if parent:
+                replace_child(parent, node, child_node)
+            else:
+                node.value = child_node.value
+                remove_child(node, child_node)
 
         return True
 
@@ -656,14 +658,14 @@ if __name__ == '__main__':
     # print(tree.remove(20))
     # print(tree)
 
-    # """ remove() example 3 """
-    # print("\nPDF - method remove() example 3")
-    # print("-------------------------------")
-    # tree = BST([10, 5, 20, 18, 12, 7, 27, 22, 18, 24, 22, 30])
-    # print(tree.remove(20))
-    # print(tree)
-    # # comment out the following lines
-    # # if you have not yet implemented traversal methods
+    """ remove() example 3 """
+    print("\nPDF - method remove() example 3")
+    print("-------------------------------")
+    tree = BST([10, 5, 20, 18, 12, 7, 27, 22, 18, 24, 22, 30])
+    print(tree.remove(20))
+    print(tree)
+    # comment out the following lines
+    # if you have not yet implemented traversal methods
     # print(tree.pre_order_traversal())
     # print(tree.in_order_traversal())
     # print(tree.post_order_traversal())
@@ -712,32 +714,32 @@ if __name__ == '__main__':
     # print(tree.post_order_traversal())
     # print(tree.by_level_traversal())
 
-    """ Comprehensive example 1 """
-    print("\nComprehensive example 1")
-    print("-----------------------")
-    tree = BST()
-    header = 'Value   Size  Height   Leaves   Unique   '
-    header += 'Complete?  Full?    Perfect?'
-    print(header)
-    print('-' * len(header))
-    print(f'  N/A {tree.size():6} {tree.height():7} ',
-          f'{tree.count_leaves():7} {tree.count_unique():8}  ',
-          f'{str(tree.is_complete()):10}',
-          f'{str(tree.is_full()):7} ',
-          f'{str(tree.is_perfect())}')
+    # """ Comprehensive example 1 """
+    # print("\nComprehensive example 1")
+    # print("-----------------------")
+    # tree = BST()
+    # header = 'Value   Size  Height   Leaves   Unique   '
+    # header += 'Complete?  Full?    Perfect?'
+    # print(header)
+    # print('-' * len(header))
+    # print(f'  N/A {tree.size():6} {tree.height():7} ',
+    #       f'{tree.count_leaves():7} {tree.count_unique():8}  ',
+    #       f'{str(tree.is_complete()):10}',
+    #       f'{str(tree.is_full()):7} ',
+    #       f'{str(tree.is_perfect())}')
 
-    for value in [10, 5, 3, 15, 12, 8, 20, 1, 4, 9, 7]:
-        tree.add(value)
-        print(f'{value:5} {tree.size():6} {tree.height():7} ',
-              f'{tree.count_leaves():7} {tree.count_unique():8}  ',
-              f'{str(tree.is_complete()):10}',
-              f'{str(tree.is_full()):7} ',
-              f'{str(tree.is_perfect())}')
-    print()
-    print(tree.pre_order_traversal())
-    print(tree.in_order_traversal())
-    print(tree.post_order_traversal())
-    print(tree.by_level_traversal())
+    # for value in [10, 5, 3, 15, 12, 8, 20, 1, 4, 9, 7]:
+    #     tree.add(value)
+    #     print(f'{value:5} {tree.size():6} {tree.height():7} ',
+    #           f'{tree.count_leaves():7} {tree.count_unique():8}  ',
+    #           f'{str(tree.is_complete()):10}',
+    #           f'{str(tree.is_full()):7} ',
+    #           f'{str(tree.is_perfect())}')
+    # print()
+    # print(tree.pre_order_traversal())
+    # print(tree.in_order_traversal())
+    # print(tree.post_order_traversal())
+    # print(tree.by_level_traversal())
 
     # """ Comprehensive example 2 """
     # print("\nComprehensive example 2")
