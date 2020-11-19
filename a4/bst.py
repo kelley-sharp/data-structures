@@ -215,52 +215,9 @@ class BST:
         """
         Removes the root node
         """
-        # if the tree is empty
-        if self.root is None:
+        if not self.root:
             return False
-
-        # if root has no children, empty the tree
-        elif self.root.left is None and self.root.right is None:
-            self.root = None
-            return True
-
-        # if there is no right node, replace with the left node
-        elif self.root.right is None:
-            self.root = self.root.left
-            return True
-
-        else:
-            # if there is a right node:
-
-            # if the right node has no left node, replace the root with the right node
-            # and assign it the root's left node as it's left node
-            if self.root.right.left is None:
-                temp = self.root.left
-                self.root = self.root.right
-                self.root.left = temp
-                return True
-
-            # find the root node's in order successor and the successor's parent
-            cur_node = self.root.right
-            ps = None
-            s = None
-
-            while cur_node.left:
-                if cur_node.left.left is None:
-                    ps = cur_node
-                    s = cur_node.left
-                    break
-                else:
-                    cur_node = cur_node.left
-
-            # replace the root node with it's in order successor
-            temp = self.root.left
-            ps.left = s.right
-            self.root = s
-            self.root.right = ps
-            self.root.left = temp
-
-            return True
+        return self.remove(self.root.value)
 
     def remove(self, value) -> bool:
         """
@@ -332,8 +289,13 @@ class BST:
             if parent:
                 replace_child(parent, node, child_node)
             else:
-                node.value = child_node.value
-                remove_child(node, child_node)
+                # the child becomes the new root
+                if node is self.root:
+                    self.root = child_node
+                else:
+                    node.value = child_node.value
+                    remove_child(node, child_node)
+
 
         return True
 
@@ -658,18 +620,18 @@ if __name__ == '__main__':
     # print(tree.remove(20))
     # print(tree)
 
-    """ remove() example 3 """
-    print("\nPDF - method remove() example 3")
-    print("-------------------------------")
-    tree = BST([10, 5, 20, 18, 12, 7, 27, 22, 18, 24, 22, 30])
-    print(tree.remove(20))
-    print(tree)
-    # comment out the following lines
-    # if you have not yet implemented traversal methods
-    # print(tree.pre_order_traversal())
-    # print(tree.in_order_traversal())
-    # print(tree.post_order_traversal())
-    # print(tree.by_level_traversal())
+    # """ remove() example 3 """
+    # print("\nPDF - method remove() example 3")
+    # print("-------------------------------")
+    # tree = BST([10, 5, 20, 18, 12, 7, 27, 22, 18, 24, 22, 30])
+    # print(tree.remove(20))
+    # print(tree)
+    # # comment out the following lines
+    # # if you have not yet implemented traversal methods
+    # # print(tree.pre_order_traversal())
+    # # print(tree.in_order_traversal())
+    # # print(tree.post_order_traversal())
+    # # print(tree.by_level_traversal())
 
     # """ remove_first() example 1 """
     # print("\nPDF - method remove_first() example 1")
