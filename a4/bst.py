@@ -341,16 +341,16 @@ class BST:
         """
         result = Queue()
 
-        def pre(node):
+        def traverse(node):
             """
             Recursive helper method that traverses the tree and visits nodes in pre-order
             """
             if node:
                 result.enqueue(node.value)
-                pre(node.left)
-                pre(node.right)
+                traverse(node.left)
+                traverse(node.right)
 
-        pre(self.root)
+        traverse(self.root)
         return result
 
     def in_order_traversal(self) -> Queue:
@@ -359,16 +359,16 @@ class BST:
         """
         result = Queue()
 
-        def in_order(node):
+        def traverse(node):
             """
             Recursive helper method that traverses the tree and visits nodes in order
             """
             if node:
-                in_order(node.left)
+                traverse(node.left)
                 result.enqueue(node.value)
-                in_order(node.right)
+                traverse(node.right)
 
-        in_order(self.root)
+        traverse(self.root)
         return result
 
     def post_order_traversal(self) -> Queue:
@@ -377,16 +377,16 @@ class BST:
         """
         result = Queue()
 
-        def post(node):
+        def traverse(node):
             """
             Recursive helper method that traverses the tree and visits nodes in post-order
             """
             if node:
-                post(node.left)
-                post(node.right)
+                traverse(node.left)
+                traverse(node.right)
                 result.enqueue(node.value)
 
-        post(self.root)
+        traverse(self.root)
         return result
 
     def by_level_traversal(self) -> Queue:
@@ -458,18 +458,18 @@ class BST:
         """
         Returns the height of the binary tree, returns -1 if the tree is empty
         """
-        def traverse(node, height=0):
+        def traverse_and_count(node, height=0):
             if not node:
                 return -1
-            return 1 + max(traverse(node.left), traverse(node.right))
+            return 1 + max(traverse_and_count(node.left), traverse_and_count(node.right))
 
-        return traverse(self.root)
+        return traverse_and_count(self.root)
 
     def count_leaves(self) -> int:
         """
         Returns the number of nodes in the tree that have no children
         """
-        def in_order_leaf_count(node):
+        def traverse_and_count(node):
             """
             Recursive helper method that traverses the tree and counts nodes without children
             """
@@ -478,20 +478,31 @@ class BST:
             elif node.left is None and node.right is None:
                 return 1
             else:
-                return in_order_leaf_count(node.left) + in_order_leaf_count(node.right)
+                return traverse_and_count(node.left) + traverse_and_count(node.right)
             
-            return in_order_leaf_count(self.root)
+            return traverse_and_count(self.root)
 
-        return in_order_leaf_count(self.root)
-
+        return traverse_and_count(self.root)
 
     def count_unique(self) -> int:
         """
-        use trav
+        Returns the number of nodes with unique values in the tree
         """
-        return 0
+        queue = self.in_order_traversal()
+        if queue.is_empty():
+            return 0
+        prev = queue.dequeue()
+        element_count = 1
+        duplicate_count = 0
 
+        while not queue.is_empty():
+            cur = queue.dequeue()
+            element_count += 1
+            if cur == prev:
+                duplicate_count += 1
+            prev = cur
 
+        return element_count - duplicate_count
 
 # BASIC TESTING - PDF EXAMPLES
 
