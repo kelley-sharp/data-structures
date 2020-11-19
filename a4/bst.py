@@ -170,21 +170,24 @@ class BST:
         else:
             return self.find(node.left, value)
 
-    def find_parent(self, node, child_node):
+    def find_parent(self, child_node):
         """
         Recursive helper method that does a binary search for a node
         with a child that has the given value
         """
-        if self.root is child_node:
-            # node has no parent
-            return None
+        def traverse(node, child_node):
+            if not node or node is child_node:
+                # node has no parent
+                return None
 
-        if node.left is child_node or node.right is child_node:
-            return node
-        elif child_node.value > node.value:
-            return self.find_parent(node.right, child_node)
-        else:
-            return self.find_parent(node.left, child_node)
+            if node.left is child_node or node.right is child_node:
+                return node
+            elif child_node.value >= node.value:
+                return traverse(node.right, child_node)
+            else:
+                return traverse(node.left, child_node)
+
+        return traverse(self.root, child_node)
 
     def contains(self, value: object) -> bool:
         """
@@ -261,29 +264,34 @@ class BST:
             return False
 
         # find its parent node if it exists
-        parent = self.find_parent(self.root, node)
+        parent = self.find_parent(node)
 
-        # if node is a leaf we can just update parent's pointers
         if not node.left and not node.right:
+            # if node is a leaf we can just update parent's pointers
             if parent:
                 remove_child(parent, node)
-                return True
             else:
+                # node is the root
                 self.root = None
-        # if node has two children find the next biggest value from right and replace current node
         elif node.left and node.right:
+            # if node has two children find the next biggest value from right and replace current node
             next_biggest_node = find_smallest_leaf(node.right)
-            if next_biggest_node.value == node.right.value:
+            if next_biggest_node is node.right:
                 # replace the node to be deleted with its right child
                 node.value = node.right.value
                 node.right = node.right.right
             else:
                 # call remove on the next biggest node
-                self.remove(next_biggest_node.value)
                 # then replace the current node with the next biggest node's value
+                next_biggest_node_parent = self.find_parent(next_biggest_node)
+                if next_biggest_node_parent.left is next_biggest_node:
+                    next_biggest_node_parent.left = next_biggest_node.right
+                else:
+                    next_biggest_node_parent.right = next_biggest_node.right
+
                 node.value = next_biggest_node.value
-        # in the else case, the node has one child so it can be replaced with it
         else:
+            # in the else case, the node has one child so it can be replaced with it
             child_node = node.left or node.right
 
             if parent:
@@ -294,8 +302,9 @@ class BST:
                     self.root = child_node
                 else:
                     node.value = child_node.value
+                    node.left = child_node.left
+                    node.right = child_node.right
                     remove_child(node, child_node)
-
 
         return True
 
@@ -358,32 +367,26 @@ class BST:
         Returns a queue object of values of nodes visited after a breadth first traversal
         """
 
-        def level(node):
-            """
-            Helper method to traverse tree by level
-            """
-            # keep a queue that resulting values will be stored in
-            result = Queue()
+        # keep a queue that resulting values will be stored in
+        result = Queue()
 
-            # keep a queue to use for traversing
-            q = Queue()
+        # keep a queue to use for traversing
+        q = Queue()
 
-            # enqueue root node to initialize with a value
-            if node is self.root:
-                q.enqueue(node)
+        # enqueue root node to initialize with a value
+        q.enqueue(self.root)
 
-            # breadth-first style iteration per-level
-            while not q.is_empty():
-                curr = q.dequeue()
-                result.enqueue(curr)
-                if curr.left is not None:
-                    q.enqueue(curr.left)
-                if curr.right is not None:
-                    q.enqueue(curr.right)
+        # breadth-first style iteration per-level
+        while not q.is_empty():
+            cur = q.dequeue()
+            if cur:
+                result.enqueue(cur)
+                if cur.left:
+                    q.enqueue(cur.left)
+                if cur.right:
+                    q.enqueue(cur.right)
 
-            return result
-
-        return level(self.root)
+        return result
 
     def is_full(self) -> bool:
         """
@@ -550,7 +553,7 @@ class BST:
 # BASIC TESTING - PDF EXAMPLES
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # """ add() example #1 """
     # print("\nPDF - method add() example 1")
     # print("----------------------------")
@@ -628,10 +631,10 @@ if __name__ == '__main__':
     # print(tree)
     # # comment out the following lines
     # # if you have not yet implemented traversal methods
-    # # print(tree.pre_order_traversal())
-    # # print(tree.in_order_traversal())
-    # # print(tree.post_order_traversal())
-    # # print(tree.by_level_traversal())
+    # print(tree.pre_order_traversal())
+    # print(tree.in_order_traversal())
+    # print(tree.post_order_traversal())
+    # print(tree.by_level_traversal())
 
     # """ remove_first() example 1 """
     # print("\nPDF - method remove_first() example 1")
@@ -727,3 +730,17 @@ if __name__ == '__main__':
     # print('', tree.pre_order_traversal(), tree.in_order_traversal(),
     #       tree.post_order_traversal(), tree.by_level_traversal(),
     #       sep='\n')
+
+    # """ failing """
+    # print("\nfailing")
+    # print("-------------------------------------")
+    # tree = BST([-1, 5, -1])
+    # print(tree.remove_first())
+    # print(tree.pre_order_traversal())
+
+    # """ failing """
+    # print("\nfailing")
+    # print("-------------------------------------")
+    # tree = BST([ 'J', 'V', 'Q', 'LJ', 'S', 'S', 'ZE', 'ZW' ])
+    # print(tree.remove_first())
+    # print(tree.pre_order_traversal())
