@@ -425,26 +425,19 @@ class BST:
         """
         Determine if the BST is full (every node has zero or two children)
         """
-        def traverse(node):
+        def traverse_and_check(node):
             """
             Recurse and check the children of each node
             """
             # null node can count as full
             if not node:
                 return True
-            # if both are missing that's good
-            if not node.left and not node.right:
-                return True
-            # if both are present that's good
-            elif node.left and node.right:
-                return True
             # if exactly left or right is missing, that's a violation
-            if not node.left or not node.right:
+            if (node.left and not node.right) or (node.right and not node.left):
                 return False
-            
-            return traverse(node.left) and traverse(node.right)
+            return traverse_and_check(node.left) and traverse_and_check(node.right)
 
-        return traverse(self.root)
+        return traverse_and_check(self.root)
 
     def is_complete(self) -> bool:
         """
