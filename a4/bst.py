@@ -458,41 +458,29 @@ class BST:
         """
         Returns the height of the binary tree, returns -1 if the tree is empty
         """
-        # if tree is empty
-        if self.root is None:
-            return -1
+        def traverse(node, height=0):
+            if not node:
+                return -1
+            return 1 + max(traverse(node.left), traverse(node.right))
 
-        # if tree only consists of root node
-        if self.root.right is None and self.root.left is None:
-            return 0
-
-        def max_height(node):
-            """
-            Helper function that determines which subtree of the node has the longest height
-            """
-
-
-        return max_height(self.root)
+        return traverse(self.root)
 
     def count_leaves(self) -> int:
         """
         Returns the number of nodes in the tree that have no children
         """
-        # if the tree is empty
-        if self.root.left is None and self.root.right is None:
-            return 0
-
         def in_order_leaf_count(node):
             """
             Recursive helper method that traverses the tree and counts nodes without children
             """
-            count = 0
-            if node:
-                in_order_leaf_count(node.left)
-                if node.left is None and node.right is None:
-                    count += 1
-                in_order_leaf_count(node.right)
-            return count
+            if not node:
+                return 0
+            elif node.left is None and node.right is None:
+                return 1
+            else:
+                return in_order_leaf_count(node.left) + in_order_leaf_count(node.right)
+            
+            return in_order_leaf_count(self.root)
 
         return in_order_leaf_count(self.root)
 
