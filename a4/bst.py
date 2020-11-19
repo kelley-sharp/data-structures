@@ -401,14 +401,15 @@ class BST:
             # keep a queue that resulting values will be stored in
             result = Queue()
 
-            # keep a queue to use while traversing
+            # keep a queue to use for traversing
             q = Queue()
 
             # enqueue root node to initialize with a value
             if node is self.root:
                 q.enqueue(node)
 
-            while (not q.is_empty()):
+            # breadth-first style iteration per-level
+            while not q.is_empty():
                 curr = q.dequeue()
                 result.enqueue(curr)
                 if curr.left is not None:
@@ -422,9 +423,28 @@ class BST:
 
     def is_full(self) -> bool:
         """
-        TODO: Write this implementation
+        Determine if the BST is full (every node has zero or two children)
         """
-        return True
+        def traverse(node):
+            """
+            Recurse and check the children of each node
+            """
+            # null node can count as full
+            if not node:
+                return True
+            # if both are missing that's good
+            if not node.left and not node.right:
+                return True
+            # if both are present that's good
+            elif node.left and node.right:
+                return True
+            # if exactly left or right is missing, that's a violation
+            if not node.left or not node.right:
+                return False
+            
+            return traverse(node.left) and traverse(node.right)
+
+        return traverse(self.root)
 
     def is_complete(self) -> bool:
         """
@@ -434,9 +454,44 @@ class BST:
 
     def is_perfect(self) -> bool:
         """
-        TODO: Write this implementation
+        Determine if the BST is perfect (all leaves at the same level and all nodes have exactly two children)
         """
-        return True
+
+        def find_leaf_depth():
+            """
+            Find the depth of an arbitrary leaf
+            """
+            depth = 0
+            cur = self.root
+            while (cur):
+                # count every time we iterate down a level
+                depth += 1
+                cur = cur.left
+            return depth
+
+        def traverse(node, leaf_depth, depth):
+            """
+            Recurse and check the depth of every leaf
+            """
+            # an empty tree is perfect
+            if not node:
+                return True
+            # if both are missing we have a leaf
+            if not node.left and not node.right:
+                if depth + 1 == leaf_depth:
+                    return True
+                else:
+                    # if the depth is wrong we violate the depth rule
+                    return False
+            # if exactly left or right is missing, we violate the two children rule
+            if not node.left or not node.right:
+                return False
+
+            return traverse(node.left, leaf_depth, depth + 1) and traverse(node.right, leaf_depth, depth + 1)
+
+        leaf_depth = find_leaf_depth()
+
+        return traverse(self.root, leaf_depth, 0)
 
     def size(self) -> int:
         """
@@ -461,6 +516,8 @@ class BST:
         def traverse_and_count(node, height=0):
             if not node:
                 return -1
+            # the height is defined as the larger of the left subtree or right subtree
+            #  at each recursive level we add 1
             return 1 + max(traverse_and_count(node.left), traverse_and_count(node.right))
 
         return traverse_and_count(self.root)
@@ -478,9 +535,8 @@ class BST:
             elif node.left is None and node.right is None:
                 return 1
             else:
+                # combine the left and the right subtree's leaves
                 return traverse_and_count(node.left) + traverse_and_count(node.right)
-            
-            return traverse_and_count(self.root)
 
         return traverse_and_count(self.root)
 
@@ -488,9 +544,14 @@ class BST:
         """
         Returns the number of nodes with unique values in the tree
         """
+
+        # if we do an in-order traversal we get a sorted queue
         queue = self.in_order_traversal()
         if queue.is_empty():
             return 0
+    
+        # iterate through the queue, counting the total elements
+        #  and the duplicates then subtract the duplicates to get uniques
         prev = queue.dequeue()
         element_count = 1
         duplicate_count = 0
@@ -505,6 +566,7 @@ class BST:
         return element_count - duplicate_count
 
 # BASIC TESTING - PDF EXAMPLES
+
 
 if __name__ == '__main__':
     # """ add() example #1 """
@@ -683,4 +745,3 @@ if __name__ == '__main__':
     # print('', tree.pre_order_traversal(), tree.in_order_traversal(),
     #       tree.post_order_traversal(), tree.by_level_traversal(),
     #       sep='\n')
-
