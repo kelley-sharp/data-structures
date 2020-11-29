@@ -1,11 +1,12 @@
 # Course: CS261 - Data Structures
 # Assignment: 5
-# Student:
-# Description:
+# Student: Kelley Sharp
+# Description: Implement the MinHeap class, complete with 4 methods
 
 
 # Import pre-written DynamicArray and LinkedList classes
-from a5_include import *
+from a5_include import DynamicArray, LinkedList
+import math
 
 
 class MinHeapException(Exception):
@@ -46,9 +47,30 @@ class MinHeap:
 
     def add(self, node: object) -> None:
         """
-        TODO: Write this implementation
+        Adds a new object to the MinHeap maintaining the heap property
         """
-        pass
+        # Put new node at the end of the array
+        self.heap.append(node)
+
+        # Initialize current index to last index (the one that holds the value we just appended)
+        curIdx = self.heap.length() - 1
+
+        # Loop starting with the current index, moving toward the beginning
+        while curIdx >= 0:
+
+            # Compute the current node's parent index ((i-1) / 2)
+            parentIdx = math.floor((curIdx) - 1 / 2)
+
+            # Compare the value of the new node with the value of its parent
+            # if the parent value is greater, and we have not reached the beginning of the array
+            if parentIdx >= 0 and self.heap[parentIdx] > self.heap[curIdx]:
+                # swap them
+                temp = self.heap[parentIdx]
+                self.heap[parentIdx] = node
+                self.heap[curIdx] = temp
+                curIdx = parentIdx
+            else:
+                curIdx = parentIdx
 
     def get_min(self) -> object:
         """
@@ -89,28 +111,28 @@ if __name__ == '__main__':
         print(h)
 
 
-    print("\nPDF - get_min example 1")
-    print("-----------------------")
-    h = MinHeap(['fish', 'bird'])
-    print(h)
-    print(h.get_min(), h.get_min())
+    # print("\nPDF - get_min example 1")
+    # print("-----------------------")
+    # h = MinHeap(['fish', 'bird'])
+    # print(h)
+    # print(h.get_min(), h.get_min())
 
 
-    print("\nPDF - remove_min example 1")
-    print("--------------------------")
-    h = MinHeap([1, 10, 2, 9, 3, 8, 4, 7, 5, 6])
-    while not h.is_empty():
-        print(h, end=' ')
-        print(h.remove_min())
+    # print("\nPDF - remove_min example 1")
+    # print("--------------------------")
+    # h = MinHeap([1, 10, 2, 9, 3, 8, 4, 7, 5, 6])
+    # while not h.is_empty():
+    #     print(h, end=' ')
+    #     print(h.remove_min())
 
 
-    print("\nPDF - build_heap example 1")
-    print("--------------------------")
-    da = DynamicArray([100, 20, 6, 200, 90, 150, 300])
-    h = MinHeap(['zebra', 'apple'])
-    print(h)
-    h.build_heap(da)
-    print(h)
-    da.set_at_index(0, 500)
-    print(da)
-    print(h)
+    # print("\nPDF - build_heap example 1")
+    # print("--------------------------")
+    # da = DynamicArray([100, 20, 6, 200, 90, 150, 300])
+    # h = MinHeap(['zebra', 'apple'])
+    # print(h)
+    # h.build_heap(da)
+    # print(h)
+    # da.set_at_index(0, 500)
+    # print(da)
+    # print(h)
