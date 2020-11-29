@@ -180,10 +180,21 @@ class HashMap:
         if new_capacity < 1:
             return
         else:
-            # Hard code the new capacity
-            self.capacity = new_capacity
+            # Create a new hash map with new capacity
+            newHM = HashMap(new_capacity, self.hash_function)
 
-            # Get the keys and rehash them all
+            # Get the keys from the current hash map
+            # rehash each and assign to the new index in the new hash map via the put method
+            for i in range(self.buckets.length()):
+                if self.buckets[i]:
+                    cur = self.buckets[i].head
+                    while cur:
+                        newHM.put(cur.key, cur.value)
+                        cur = cur.next
+
+            # replace the current hash map with the new one
+            self.buckets = newHM.buckets
+            self.capacity = newHM.capacity
 
     def get_keys(self) -> DynamicArray:
         """
