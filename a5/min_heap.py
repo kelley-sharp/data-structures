@@ -59,7 +59,7 @@ class MinHeap:
         while curIdx >= 0:
 
             # Compute the current node's parent index ((i-1) / 2)
-            parentIdx = math.floor((curIdx) - 1 / 2)
+            parentIdx = math.floor((curIdx - 1) / 2)
 
             # Compare the value of the new node with the value of its parent
             # if the parent value is greater, and we have not reached the beginning of the array
@@ -74,9 +74,9 @@ class MinHeap:
 
     def get_min(self) -> object:
         """
-        TODO: Write this implementation
+        Returns an object with a minimum key without removing it from the heap
         """
-        return None
+        return self.heap[0]
 
     def remove_min(self) -> object:
         """
