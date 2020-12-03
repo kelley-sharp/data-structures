@@ -107,9 +107,9 @@ class HashMap:
             self.size += 1
         else:
             # Otherwise update the linked list at the index with this node as the head
-            newNode = SLNode(key, value)
+            new_node = SLNode(key, value)
             ll = self.buckets[index]
-            ll.head = newNode
+            ll.head = new_node
             self.size += 1
 
     def remove(self, key: str) -> None:
@@ -162,16 +162,16 @@ class HashMap:
         Returns the current hash table load factor
         """
         # find total number of elements stored in the table
-        totalElements = 0
+        total_elements = 0
         for ll in self.buckets:
             if ll.length():
-                totalElements += ll.length()
+                total_elements += ll.length()
 
         # find the number of buckets (capacity)
         buckets = self.capacity
 
         # return load factor
-        return totalElements / buckets
+        return total_elements / buckets
 
     def resize_table(self, new_capacity: int) -> None:
         """
@@ -181,7 +181,7 @@ class HashMap:
             return
         else:
             # Create a new hash map with new capacity
-            newHM = HashMap(new_capacity, self.hash_function)
+            new_hm = HashMap(new_capacity, self.hash_function)
 
             # Get the keys from the current hash map
             # rehash each and assign to the new index in the new hash map via the put method
@@ -189,28 +189,28 @@ class HashMap:
                 if self.buckets[i]:
                     cur = self.buckets[i].head
                     while cur:
-                        newHM.put(cur.key, cur.value)
+                        new_hm.put(cur.key, cur.value)
                         cur = cur.next
 
             # replace the current hash map with the new one
-            self.buckets = newHM.buckets
-            self.capacity = newHM.capacity
+            self.buckets = new_hm.buckets
+            self.capacity = new_hm.capacity
 
     def get_keys(self) -> DynamicArray:
         """
         Returns a DynamicArray that contains all keys stored in the hash map
         """
-        keysArr = DynamicArray()
+        keys_arr = DynamicArray()
 
         # Loop through buckets and add keys to the new array as we find them
         for i in range(self.buckets.length()):
             if self.buckets[i]:
                 cur = self.buckets[i].head
                 while cur:
-                    keysArr.append(cur.key)
+                    keys_arr.append(cur.key)
                     cur = cur.next
 
-        return keysArr
+        return keys_arr
 
 
 # BASIC TESTING
