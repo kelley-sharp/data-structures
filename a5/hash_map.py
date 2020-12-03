@@ -60,7 +60,7 @@ class HashMap:
         """
         Clears the content of the hash map, without changing the capacity
         """
-        # Loop through the length of buckets and re-initialize each bucket's linked list 
+        # Loop through the length of buckets and re-initialize each bucket's linked list
         # with a head that has a value of None
         for i in range(self.buckets.length()):
             self.buckets[i].head = None
@@ -159,7 +159,7 @@ class HashMap:
 
     def table_load(self) -> float:
         """
-        Returns the current has table load factor
+        Returns the current hash table load factor
         """
         # find total number of elements stored in the table
         totalElements = 0
@@ -213,10 +213,8 @@ class HashMap:
         return keysArr
 
 
-
 # BASIC TESTING
 if __name__ == "__main__":
-
     print("\nPDF - empty_buckets example 1")
     print("-----------------------------")
     m = HashMap(100, hash_function_1)
@@ -230,7 +228,6 @@ if __name__ == "__main__":
     m.put('key4', 40)
     print(m.empty_buckets(), m.size, m.capacity)
 
-
     print("\nPDF - empty_buckets example 2")
     print("-----------------------------")
     m = HashMap(50, hash_function_1)
@@ -238,7 +235,6 @@ if __name__ == "__main__":
         m.put('key' + str(i), i * 100)
         if i % 30 == 0:
             print(m.empty_buckets(), m.size, m.capacity)
-
 
     print("\nPDF - table_load example 1")
     print("--------------------------")
@@ -250,7 +246,6 @@ if __name__ == "__main__":
     print(m.table_load())
     m.put('key1', 30)
     print(m.table_load())
-
 
     print("\nPDF - table_load example 2")
     print("--------------------------")
@@ -271,7 +266,6 @@ if __name__ == "__main__":
     m.clear()
     print(m.size, m.capacity)
 
-
     print("\nPDF - clear example 2")
     print("---------------------")
     m = HashMap(50, hash_function_1)
@@ -285,7 +279,6 @@ if __name__ == "__main__":
     m.clear()
     print(m.size, m.capacity)
 
-
     print("\nPDF - put example 1")
     print("-------------------")
     m = HashMap(50, hash_function_1)
@@ -294,7 +287,6 @@ if __name__ == "__main__":
         if i % 25 == 24:
             print(m.empty_buckets(), m.table_load(), m.size, m.capacity)
 
-
     print("\nPDF - put example 2")
     print("-------------------")
     m = HashMap(40, hash_function_2)
@@ -302,7 +294,6 @@ if __name__ == "__main__":
         m.put('str' + str(i // 3), i * 100)
         if i % 10 == 9:
             print(m.empty_buckets(), m.table_load(), m.size, m.capacity)
-
 
     print("\nPDF - contains_key example 1")
     print("----------------------------")
@@ -317,7 +308,6 @@ if __name__ == "__main__":
     print(m.contains_key('key3'))
     m.remove('key3')
     print(m.contains_key('key3'))
-
 
     print("\nPDF - contains_key example 2")
     print("----------------------------")
@@ -334,14 +324,12 @@ if __name__ == "__main__":
         result &= not m.contains_key(str(key + 1))
     print(result)
 
-
     print("\nPDF - get example 1")
     print("-------------------")
     m = HashMap(30, hash_function_1)
     print(m.get('key'))
     m.put('key1', 10)
     print(m.get('key1'))
-
 
     print("\nPDF - get example 2")
     print("-------------------")
@@ -353,7 +341,6 @@ if __name__ == "__main__":
         print(i, m.get(str(i)), m.get(str(i)) == i * 10)
         print(i + 1, m.get(str(i + 1)), m.get(str(i + 1)) == (i + 1) * 10)
 
-
     print("\nPDF - remove example 1")
     print("----------------------")
     m = HashMap(50, hash_function_1)
@@ -364,7 +351,6 @@ if __name__ == "__main__":
     print(m.get('key1'))
     m.remove('key4')
 
-
     print("\nPDF - resize example 1")
     print("----------------------")
     m = HashMap(20, hash_function_1)
@@ -372,7 +358,6 @@ if __name__ == "__main__":
     print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'))
     m.resize_table(30)
     print(m.size, m.capacity, m.get('key1'), m.contains_key('key1'))
-
 
     print("\nPDF - resize example 2")
     print("----------------------")
@@ -393,7 +378,6 @@ if __name__ == "__main__":
             result &= m.contains_key(str(key))
             result &= not m.contains_key(str(key + 1))
         print(capacity, result, m.size, m.capacity, round(m.table_load(), 2))
-
 
     print("\nPDF - get_keys example 1")
     print("------------------------")
