@@ -45,7 +45,7 @@ class UndirectedGraph:
         Adds a new vertex to the graph
         """
         # Adjacency list example: {'A': [], 'B', []...}
-        # If the vertex name is already present in the graph, do nothing
+        # If the vertex name is already present in the graph
         if v in self.adj_list:
             return
         else:
@@ -55,26 +55,44 @@ class UndirectedGraph:
         """
         Adds a new edge to the graph connecting two vertices with provided names
         """
-        # If u and v refer to the same vertex,
-        # or if the edge already exists in the graph, do nothing
+        # or if u or v are not in the graph
+        if u not in self.adj_list:
+            self.add_vertex(u)
+        if v not in self.adj_list:
+            self.add_vertex(v)
+        # If u and v refer to the same vertex, or if the edge already exists in the graph
         if u == v or v in self.adj_list[u]:
             return
         else:
             self.adj_list[u].append(v)
             self.adj_list[v].append(u)
 
-
     def remove_edge(self, v: str, u: str) -> None:
         """
-        TODO: Write this implementation
+        Removes an edge between two vertices with provided names
         """
-
+        # If either (or both) of the vertex names do not exist in the graph
+        if v not in self.adj_list or u not in self.adj_list:
+            return
+        # If an edge does not exist between them
+        if u not in self.adj_list[v] or v not in self.adj_list[u]:
+            return
+        else:
+            self.adj_list[u].remove(v)
+            self.adj_list[v].remove(u)
 
     def remove_vertex(self, v: str) -> None:
         """
-        TODO: Write this implementation
+        Removes a vertex with a given name and all edges incident to it from the graph
         """
-
+        # if the given vertex does not exist in the graph
+        if v not in self.adj_list:
+            return
+        else:  # for each vertex v shares an edge with, remove v from that vertex's edges list
+            for value in self.adj_list[v]:
+                self.adj_list[value].remove(v)
+            # remove the given vertex itself from the adjacency list
+            del self.adj_list[v]
 
     def get_vertices(self) -> []:
         """
@@ -120,21 +138,21 @@ class UndirectedGraph:
 
 if __name__ == '__main__':
 
-    print("\nPDF - method add_vertex() / add_edge example 1")
-    print("----------------------------------------------")
-    g = UndirectedGraph()
-    print(g)
+    # print("\nPDF - method add_vertex() / add_edge example 1")
+    # print("----------------------------------------------")
+    # g = UndirectedGraph()
+    # print(g)
 
-    for v in 'ABCDE':
-        g.add_vertex(v)
-    print(g)
+    # for v in 'ABCDE':
+    #     g.add_vertex(v)
+    # print(g)
 
-    g.add_vertex('A')
-    print(g)
+    # g.add_vertex('A')
+    # print(g)
 
-    for u, v in ['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE', ('B', 'C')]:
-        g.add_edge(u, v)
-    print(g)
+    # for u, v in ['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE', ('B', 'C')]:
+    #     g.add_edge(u, v)
+    # print(g)
 
 
     # print("\nPDF - method remove_edge() / remove_vertex example 1")
