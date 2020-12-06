@@ -96,27 +96,36 @@ class UndirectedGraph:
 
     def get_vertices(self) -> []:
         """
-        TODO: Write this implementation
+        Returns a list of vertices of the graph, unordered
         """
-
+        return list(self.adj_list.keys())
 
     def get_edges(self) -> []:
         """
-        TODO: Write this implementation
+        Returns a list of edges in the graph as tuples, unordered
         """
+        edge_set = set()
+        # loop over key, value tuples
+        for vertex, adjacent_vertices in self.adj_list.items():
+            # loop over each vertex's adjacent vertices
+            for adjacent in adjacent_vertices:
+                # place alphabetically sorted tuples into a set
+                if vertex > adjacent:
+                    edge_set.add((adjacent, vertex))
+                else:
+                    edge_set.add((vertex, adjacent))
 
+        return list(edge_set)
 
     def is_valid_path(self, path: []) -> bool:
         """
         TODO: Write this implementation
         """
 
-
     def dfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
         """
-
 
     def bfs(self, v_start, v_end=None) -> []:
         """
@@ -166,12 +175,12 @@ if __name__ == '__main__':
     # print(g)
 
 
-    # print("\nPDF - method get_vertices() / get_edges() example 1")
-    # print("---------------------------------------------------")
-    # g = UndirectedGraph()
-    # print(g.get_edges(), g.get_vertices(), sep='\n')
-    # g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE'])
-    # print(g.get_edges(), g.get_vertices(), sep='\n')
+    print("\nPDF - method get_vertices() / get_edges() example 1")
+    print("---------------------------------------------------")
+    g = UndirectedGraph()
+    print(g.get_edges(), g.get_vertices(), sep='\n')
+    g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE'])
+    print(g.get_edges(), g.get_vertices(), sep='\n')
 
 
     # print("\nPDF - method is_valid_path() example 1")
