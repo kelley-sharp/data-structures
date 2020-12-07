@@ -125,10 +125,24 @@ class UndirectedGraph:
 
     def is_valid_path(self, path: []) -> bool:
         """
-        Takes a list of names and returns True if the sequence of vertices
+        Takes a list of vertex names and returns True if the sequence of vertices
         represents a valid path in the graph (empty paths are considered valid)
         """
-        pass
+        if path == []:
+            return True
+
+        # If there is only one vertex name in the path and that vertex is not in the graph
+        if len(path) == 1 and path[0] not in self.adj_list:
+            return False
+
+        # Otherwise there are at least two vertices in the path to visit we can check for edges
+        i = 0
+        while i + 1 < len(path):
+            if path[i + 1] not in self.adj_list[path[i]]:
+                return False
+            i += 1
+
+        return True
 
     def dfs(self, v_start, v_end=None) -> []:
         """
@@ -234,25 +248,25 @@ if __name__ == '__main__':
     # print(g.get_edges(), g.get_vertices(), sep='\n')
 
 
-    # print("\nPDF - method is_valid_path() example 1")
-    # print("--------------------------------------")
-    # g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE'])
-    # test_cases = ['ABC', 'ADE', 'ECABDCBE', 'ACDECB', '', 'D', 'Z']
-    # for path in test_cases:
-    #     print(list(path), g.is_valid_path(list(path)))
-
-
-    print("\nPDF - method dfs() and bfs() example 1")
+    print("\nPDF - method is_valid_path() example 1")
     print("--------------------------------------")
-    edges = ['AE', 'AC', 'BE', 'CE', 'CD', 'CB', 'BD', 'ED', 'BH', 'QG', 'FG']
-    g = UndirectedGraph(edges)
-    test_cases = 'ABCDEGH'
-    for case in test_cases:
-        print(f'{case} DFS:{g.dfs(case)} BFS:{g.bfs(case)}')
-    print('-----')
-    for i in range(1, len(test_cases)):
-        v1, v2 = test_cases[i], test_cases[-1 - i]
-        print(f'{v1}-{v2} DFS:{g.dfs(v1, v2)} BFS:{g.bfs(v1, v2)}')
+    g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE'])
+    test_cases = ['ABC', 'ADE', 'ECABDCBE', 'ACDECB', '', 'D', 'Z']
+    for path in test_cases:
+        print(list(path), g.is_valid_path(list(path)))
+
+
+    # print("\nPDF - method dfs() and bfs() example 1")
+    # print("--------------------------------------")
+    # edges = ['AE', 'AC', 'BE', 'CE', 'CD', 'CB', 'BD', 'ED', 'BH', 'QG', 'FG']
+    # g = UndirectedGraph(edges)
+    # test_cases = 'ABCDEGH'
+    # for case in test_cases:
+    #     print(f'{case} DFS:{g.dfs(case)} BFS:{g.bfs(case)}')
+    # print('-----')
+    # for i in range(1, len(test_cases)):
+    #     v1, v2 = test_cases[i], test_cases[-1 - i]
+    #     print(f'{v1}-{v2} DFS:{g.dfs(v1, v2)} BFS:{g.bfs(v1, v2)}')
 
 
     # print("\nPDF - method count_connected_components() example 1")
