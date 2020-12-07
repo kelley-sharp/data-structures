@@ -3,6 +3,9 @@
 # Assignment: A6 - Undirected Graph
 # Description: Implement an undirected graph with 11 methods
 
+from heapq import heappush, heappop
+from collections import deque
+
 
 class UndirectedGraph:
     """
@@ -40,28 +43,31 @@ class UndirectedGraph:
 
     # ------------------------------------------------------------------ #
 
-    def add_vertex(self, v: str) -> None:
+    def add_vertex(self, v: str) -> int:
         """
         Adds a new vertex to the graph
         """
         # Adjacency list example: {'A': [], 'B', []...}
         # If the vertex name is already present in the graph
-        if v in self.adj_list:
-            return
-        else:
+        if v not in self.adj_list:
             self.adj_list[v] = []
+
+        return len(self.adj_list.keys())
 
     def add_edge(self, u: str, v: str) -> None:
         """
         Adds a new edge to the graph connecting two vertices with provided names
         """
+        # If u and v refer to the same vertex
+        if u == v:
+            return
         # or if u or v are not in the graph
         if u not in self.adj_list:
             self.add_vertex(u)
         if v not in self.adj_list:
             self.add_vertex(v)
-        # If u and v refer to the same vertex, or if the edge already exists in the graph
-        if u == v or v in self.adj_list[u]:
+
+        if v in self.adj_list[u]:
             return
         else:
             self.adj_list[u].append(v)
@@ -119,19 +125,64 @@ class UndirectedGraph:
 
     def is_valid_path(self, path: []) -> bool:
         """
-        TODO: Write this implementation
+        Takes a list of names and returns True if the sequence of vertices
+        represents a valid path in the graph (empty paths are considered valid)
         """
+        pass
 
     def dfs(self, v_start, v_end=None) -> []:
         """
-        TODO: Write this implementation
+        Performs a depth-first search (DFS) in the graph and returns a list of vertices
+        visited during the search, in the order they were visited
         """
+        if v_start not in self.adj_list:
+            return []
+
+        stack = [v_start]
+        visited = []
+
+        while len(stack) > 0:
+            # get current by popping off stack
+            cur = stack.pop()
+            # visit
+            visited.append(cur)
+            # if current is the v_end, break
+            if cur is v_end:
+                break
+            # push neighbors onto stack in alphabetical order
+            for neighbor in sorted(self.adj_list[cur], reverse=True):
+                if neighbor not in visited:
+                    # if the neighbor is already in the stack, move it up
+                    if neighbor in stack:
+                        stack.remove(neighbor)
+                    stack.append(neighbor)
+
+        return visited
 
     def bfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
         """
+        if v_start not in self.adj_list:
+            return []
+        queue = deque([v_start])
+        visited = []
 
+        while len(queue) > 0:
+            # get current by dequeing
+            cur = queue.popleft()
+            # visit
+            visited.append(cur)
+            # if current is the v_end, break
+            if cur is v_end:
+                break
+            # enqueue neighbors in alphabetical order
+            #  if they have not been visited yet
+            for neighbor in sorted(self.adj_list[cur]):
+                if neighbor not in visited and neighbor not in queue:
+                    queue.append(neighbor)
+
+        return visited
 
     def count_connected_components(self):
         """
@@ -175,12 +226,12 @@ if __name__ == '__main__':
     # print(g)
 
 
-    print("\nPDF - method get_vertices() / get_edges() example 1")
-    print("---------------------------------------------------")
-    g = UndirectedGraph()
-    print(g.get_edges(), g.get_vertices(), sep='\n')
-    g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE'])
-    print(g.get_edges(), g.get_vertices(), sep='\n')
+    # print("\nPDF - method get_vertices() / get_edges() example 1")
+    # print("---------------------------------------------------")
+    # g = UndirectedGraph()
+    # print(g.get_edges(), g.get_vertices(), sep='\n')
+    # g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE'])
+    # print(g.get_edges(), g.get_vertices(), sep='\n')
 
 
     # print("\nPDF - method is_valid_path() example 1")
@@ -191,17 +242,17 @@ if __name__ == '__main__':
     #     print(list(path), g.is_valid_path(list(path)))
 
 
-    # print("\nPDF - method dfs() and bfs() example 1")
-    # print("--------------------------------------")
-    # edges = ['AE', 'AC', 'BE', 'CE', 'CD', 'CB', 'BD', 'ED', 'BH', 'QG', 'FG']
-    # g = UndirectedGraph(edges)
-    # test_cases = 'ABCDEGH'
-    # for case in test_cases:
-    #     print(f'{case} DFS:{g.dfs(case)} BFS:{g.bfs(case)}')
-    # print('-----')
-    # for i in range(1, len(test_cases)):
-    #     v1, v2 = test_cases[i], test_cases[-1 - i]
-    #     print(f'{v1}-{v2} DFS:{g.dfs(v1, v2)} BFS:{g.bfs(v1, v2)}')
+    print("\nPDF - method dfs() and bfs() example 1")
+    print("--------------------------------------")
+    edges = ['AE', 'AC', 'BE', 'CE', 'CD', 'CB', 'BD', 'ED', 'BH', 'QG', 'FG']
+    g = UndirectedGraph(edges)
+    test_cases = 'ABCDEGH'
+    for case in test_cases:
+        print(f'{case} DFS:{g.dfs(case)} BFS:{g.bfs(case)}')
+    print('-----')
+    for i in range(1, len(test_cases)):
+        v1, v2 = test_cases[i], test_cases[-1 - i]
+        print(f'{v1}-{v2} DFS:{g.dfs(v1, v2)} BFS:{g.bfs(v1, v2)}')
 
 
     # print("\nPDF - method count_connected_components() example 1")
