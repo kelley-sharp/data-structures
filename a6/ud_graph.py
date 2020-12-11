@@ -48,11 +48,9 @@ class UndirectedGraph:
         Adds a new vertex to the graph
         """
         # Adjacency list example: {'A': [], 'B', []...}
-        # If the vertex name is already present in the graph
+        # If the vertex name isn't already present in the graph
         if v not in self.adj_list:
             self.adj_list[v] = []
-
-        return len(self.adj_list.keys())
 
     def add_edge(self, u: str, v: str) -> None:
         """
