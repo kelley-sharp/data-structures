@@ -86,7 +86,7 @@ class DirectedGraph:
         if src == dst or weight < 0:
             return
         # Or if one or both vertices are not in the matrix
-        elif src not in self.adj_matrix or dst not in self.adj_matrix[0]:
+        elif src >= len(self.adj_matrix) or dst >= len(self.adj_matrix):
             return
         else:
             self.adj_matrix[src][dst] = weight
@@ -95,13 +95,19 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        
 
     def get_vertices(self) -> []:
         """
-        TODO: Write this implementation
+        Returns a list of vertices of the graph
         """
-        
+        vertices = []
+
+        i = 0
+        while i < self.v_count:
+            vertices.append(i)
+            i += 1
+
+        return vertices
 
     def get_edges(self) -> []:
         """
