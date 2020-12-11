@@ -200,22 +200,15 @@ class UndirectedGraph:
         """
         Returns the number of connected components in the graph
         """
-        connected_components = []
+        connected_components = 0
+        visited = []
 
-        # use dfs to get unvisited vertices
-        visited = self.bfs(list(self.adj_list.keys())[0])
-        connected_components.append(visited)
+        for v in self.adj_list.keys():
+            if v not in visited:
+                visited += self.bfs(v)
+                connected_components += 1
 
-        # use dfs on each unvisited vertex to find their unvisited cells
-        temp_visited = visited
-        # while len(temp_visited) > 0:
-        for key, value in self.adj_list.items():
-            if key not in temp_visited:
-                temp_visited = self.bfs(key)
-                connected_components.append(temp_visited)
-                # visited.append(*temp_visited)
-
-        return len(connected_components)
+        return connected_components
 
     def has_cycle(self):
         """
