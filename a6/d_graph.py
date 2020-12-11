@@ -93,8 +93,16 @@ class DirectedGraph:
 
     def remove_edge(self, src: int, dst: int) -> None:
         """
-        TODO: Write this implementation
+        Removes an edge between two vertices with provided names
         """
+        # If src or dst are not vertices in the graph
+        if src is > self.v_count or dst is > self.v_count:
+            return
+        # If there is no edge to remove between those vertices
+        if self.adj_matrix[src][dst] == 0:
+            return
+
+        self.adj_matrix[src][dst] == 0
 
     def get_vertices(self) -> []:
         """
@@ -111,9 +119,20 @@ class DirectedGraph:
 
     def get_edges(self) -> []:
         """
-        TODO: Write this implementation
+        Returns a list of edges and their weights in the graph as tuples
         """
-        
+        edges_list = []
+        # Use a nested loop to gain access to src, dst, and weights of edges
+        i = 0
+        while i < len(self.adj_matrix):
+            j = 0
+            while j < len(self.adj_matrix):
+                if self.adj_matrix[i][j] > 0:
+                    edges_list.append((i, j, self.adj_matrix[i][j]))
+                j += 1
+            i += 1
+
+        return edges_list
 
     def is_valid_path(self, path: []) -> bool:
         """
@@ -122,11 +141,37 @@ class DirectedGraph:
         
 
 
-    def dfs(self, v_start, v_end=None) -> []:
+    def dfs(self, v_start=0, v_end=None) -> []:
         """
-        TODO: Write this implementation
+        Performs a depth-first search in the graph and returns a list of vertices visited,
+        in the order they were visited during the search
         """
-       
+        # If v_start is not in the graph
+        if v_start > self.v_count or v_start < 0:
+            return []
+    
+        visited = []
+        stack = [v_start]
+
+        while len(stack) > 0:
+            # Get current by popping off top of stack
+            cur = stack.pop()
+            # Visit the current vertex
+            visited.append(cur)
+            # If current is the provided end vertex
+            if cur == v_end:
+                break
+            # Push neighbors onto the stack in ascending order
+            for neighbor in self.adj_matrix[cur]:
+                if neighbor not in visited:
+                    # If neighbor is already in the stack, move it up
+                    if neighbor in stack:
+                        stack.remove(neighbor)
+                    stack.append(neighbor)
+
+        return visited
+
+            
 
     def bfs(self, v_start, v_end=None) -> []:
         """
@@ -149,19 +194,19 @@ class DirectedGraph:
 
 
 if __name__ == '__main__':
-    print("\nPDF - method add_vertex() / add_edge example 1")
-    print("----------------------------------------------")
-    g = DirectedGraph()
-    print(g)
-    for _ in range(5):
-        g.add_vertex()
-    print(g)
+    # print("\nPDF - method add_vertex() / add_edge example 1")
+    # print("----------------------------------------------")
+    # g = DirectedGraph()
+    # print(g)
+    # for _ in range(5):
+    #     g.add_vertex()
+    # print(g)
 
-    edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
-             (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    for src, dst, weight in edges:
-        g.add_edge(src, dst, weight)
-    print(g)
+    # edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
+    #          (3, 1, 5), (2, 1, 23), (3, 2, 7)]
+    # for src, dst, weight in edges:
+    #     g.add_edge(src, dst, weight)
+    # print(g)
 
 
     # print("\nPDF - method get_edges() example 1")
