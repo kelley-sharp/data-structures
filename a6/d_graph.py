@@ -144,17 +144,21 @@ class DirectedGraph:
         Takes a list of vertex names and returns True if the sequence of vertices
         represents a valid path in the graph. Empty path is considered valid
         """
-        if path == []:
+        if len(path) == 0:
             return True
 
-        # If there is only one vertex in the path and that vertex is not in the graph
-        if len(path) == 1 and path[0] not in self.adj_matrix:
+        if path[0] < 0 or path[0] > self.v_count - 1:
             return False
-
         # Otherwise there are at least two vertices in the path
-        # Loop through each vertex's neighbors, if there is no edge with 
-        # the next vertex in the path, return False
-    
+        # Loop through each vertex's neighbors. If there is no edge shared
+        # with the next vertex in the path, return False
+        i = 0
+        while i < len(path) - 1:
+            if self.adj_matrix[path[i]][path[i + 1]] == 0:
+                return False
+            i += 1
+
+        return True
 
     def dfs(self, v_start, v_end=None) -> []:
         """
@@ -229,6 +233,41 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
+        def detect_cycle(v, visited, current_visited):
+            """
+            Recursive helper method that does a DFS-style traversal of
+            all the neighbors, looking for a cycle
+            """
+            # visit the current vertex
+            visited.add(v)
+            # add current vertex to current visit iteration
+            #  so that the current vertex is the origin of the cycle check
+            current_visited.add(v)
+            # go through neighbors in the row
+            neighbor = 0
+            row = self.adj_matrix[v]
+            while neighbor < self.v_count:
+                neighbor_edge = row[neighbor]
+                # if neighbor has a nonzero edge
+                if neighbor_edge > 0:
+                    # if we've already visited neighbor this iteration
+                    #  then we've found a cycle
+                    if neighbor in current_visited:
+                        return True
+                    # otherwise recurse on that neighbor and look for cycles
+                    elif detect_cycle(neighbor, visited, current_visited):
+                        return True
+                neighbor += 1
+            # remove the current vertex from this iteration
+            #  so that the next iteration starts clean
+            current_visited.remove(v)
+            return False
+        visited = set()
+        current_visited = set()
+        for vertex in range(self.v_count):
+            if vertex not in visited and detect_cycle(vertex, visited, current_visited):
+                return True
+        return False
 
     def dijkstra(self, src: int) -> []:
         """
@@ -260,22 +299,22 @@ if __name__ == '__main__':
     # g = DirectedGraph(edges)
     # print(g.get_edges(), g.get_vertices(), sep='\n')
 
-    # print("\nPDF - method is_valid_path() example 1")
-    # print("--------------------------------------")
-    # edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
-    #          (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    # g = DirectedGraph(edges)
-    # test_cases = [[0, 1, 4, 3], [1, 3, 2, 1], [0, 4], [4, 0], [], [2]]
-    # for path in test_cases:
-    #     print(path, g.is_valid_path(path))
-
-    print("\nPDF - method dfs() and bfs() example 1")
+    print("\nPDF - method is_valid_path() example 1")
     print("--------------------------------------")
     edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
     g = DirectedGraph(edges)
-    for start in range(5):
-        print(f'{start} DFS:{g.dfs(start)} BFS:{g.bfs(start)}')
+    test_cases = [[0, 1, 4, 3], [1, 3, 2, 1], [0, 4], [4, 0], [], [2]]
+    for path in test_cases:
+        print(path, g.is_valid_path(path))
+
+    # print("\nPDF - method dfs() and bfs() example 1")
+    # print("--------------------------------------")
+    # edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
+    #          (3, 1, 5), (2, 1, 23), (3, 2, 7)]
+    # g = DirectedGraph(edges)
+    # for start in range(5):
+    #     print(f'{start} DFS:{g.dfs(start)} BFS:{g.bfs(start)}')
 
     # print("\nPDF - method has_cycle() example 1")
     # print("----------------------------------")
