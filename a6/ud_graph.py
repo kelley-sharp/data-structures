@@ -3,7 +3,6 @@
 # Assignment: A6 - Undirected Graph
 # Description: Implement an undirected graph with 11 methods
 
-from heapq import heappush, heappop
 from collections import deque
 
 
@@ -181,7 +180,7 @@ class UndirectedGraph:
         visited = []
 
         while len(queue) > 0:
-            # get current by dequeing
+            # get current by dequeuing
             cur = queue.popleft()
             # visit
             visited.append(cur)
@@ -234,7 +233,6 @@ if __name__ == '__main__':
     #     g.add_edge(u, v)
     # print(g)
 
-
     # print("\nPDF - method remove_edge() / remove_vertex example 1")
     # print("----------------------------------------------------")
     # g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE'])
@@ -244,7 +242,6 @@ if __name__ == '__main__':
     # print(g)
     # g.remove_vertex('D')
     # print(g)
-
 
     # print("\nPDF - method get_vertices() / get_edges() example 1")
     # print("---------------------------------------------------")
@@ -272,7 +269,6 @@ if __name__ == '__main__':
     #     v1, v2 = test_cases[i], test_cases[-1 - i]
     #     print(f'{v1}-{v2} DFS:{g.dfs(v1, v2)} BFS:{g.bfs(v1, v2)}')
 
-
     print("\nPDF - method count_connected_components() example 1")
     print("---------------------------------------------------")
     edges = ['AE', 'AC', 'BE', 'CE', 'CD', 'CB', 'BD', 'ED', 'BH', 'QG', 'FG']
@@ -292,7 +288,6 @@ if __name__ == '__main__':
     # connected component example starting graph - kelley
     # test = UndirectedGraph(['AE', 'AC', 'BE', 'CE', 'CD', 'CB', 'BD', 'ED', 'BH', 'QG', 'FG'])
     # print(test.__str__())
-
 
     # print("\nPDF - method has_cycle() example 1")
     # print("----------------------------------")

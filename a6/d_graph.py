@@ -3,6 +3,8 @@
 # Assignment: A6 - Directed Graph
 # Description: Implement a directed graph with 10 methods
 
+from collections import deque
+
 
 class DirectedGraph:
     """
@@ -96,7 +98,7 @@ class DirectedGraph:
         Removes an edge between two vertices with provided names
         """
         # If src or dst are not vertices in the graph
-        if src is > self.v_count or dst is > self.v_count:
+        if src > self.v_count or dst > self.v_count:
             return
         # If there is no edge to remove between those vertices
         if self.adj_matrix[src][dst] == 0:
@@ -138,10 +140,8 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        
 
-
-    def dfs(self, v_start=0, v_end=None) -> []:
+    def dfs(self, v_start, v_end=None) -> []:
         """
         Performs a depth-first search in the graph and returns a list of vertices visited,
         in the order they were visited during the search
@@ -149,8 +149,9 @@ class DirectedGraph:
         # If v_start is not in the graph
         if v_start > self.v_count or v_start < 0:
             return []
-    
+
         visited = []
+        # starting stack has start vertex
         stack = [v_start]
 
         while len(stack) > 0:
@@ -162,35 +163,62 @@ class DirectedGraph:
             if cur == v_end:
                 break
             # Push neighbors onto the stack in ascending order
-            for neighbor in self.adj_matrix[cur]:
-                if neighbor not in visited:
-                    # If neighbor is already in the stack, move it up
+            neighbor = len(self.adj_matrix) - 1
+            row = self.adj_matrix[cur]
+            while neighbor >= 0:
+                neighbor_edge = row[neighbor]
+                # make sure there is a nonzero edge weight
+                if neighbor_edge > 0 and neighbor not in visited:
                     if neighbor in stack:
                         stack.remove(neighbor)
                     stack.append(neighbor)
+                neighbor -= 1
 
         return visited
-
-            
 
     def bfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
         """
-        
+        # If v_start is not in the graph
+        if v_start > self.v_count or v_start < 0:
+            return []
+
+        visited = []
+
+        # queue up starting vertex
+        queue = deque([v_start])
+
+        while len(queue) > 0:
+            # Get current by dequeuing
+            cur = queue.popleft()
+            # Visit the current vertex
+            visited.append(cur)
+            # If current is the provided end vertex
+            if cur == v_end:
+                break
+            # enqueue neighbors in ascending order
+            #  if they have not been visited yet
+            neighbor = 0
+            row = self.adj_matrix[cur]
+            while neighbor < len(self.adj_matrix):
+                neighbor_edge = row[neighbor]
+                # make sure there is a nonzero edge weight
+                if neighbor_edge > 0 and neighbor not in visited and neighbor not in queue:
+                    queue.append(neighbor)
+                neighbor += 1
+
+        return visited
 
     def has_cycle(self):
         """
         TODO: Write this implementation
         """
-        
 
     def dijkstra(self, src: int) -> []:
         """
         TODO: Write this implementation
         """
-       
-
 
 
 if __name__ == '__main__':
@@ -208,7 +236,6 @@ if __name__ == '__main__':
     #     g.add_edge(src, dst, weight)
     # print(g)
 
-
     # print("\nPDF - method get_edges() example 1")
     # print("----------------------------------")
     # g = DirectedGraph()
@@ -217,7 +244,6 @@ if __name__ == '__main__':
     #          (3, 1, 5), (2, 1, 23), (3, 2, 7)]
     # g = DirectedGraph(edges)
     # print(g.get_edges(), g.get_vertices(), sep='\n')
-
 
     # print("\nPDF - method is_valid_path() example 1")
     # print("--------------------------------------")
@@ -228,15 +254,13 @@ if __name__ == '__main__':
     # for path in test_cases:
     #     print(path, g.is_valid_path(path))
 
-
-    # print("\nPDF - method dfs() and bfs() example 1")
-    # print("--------------------------------------")
-    # edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
-    #          (3, 1, 5), (2, 1, 23), (3, 2, 7)]
-    # g = DirectedGraph(edges)
-    # for start in range(5):
-    #     print(f'{start} DFS:{g.dfs(start)} BFS:{g.bfs(start)}')
-
+    print("\nPDF - method dfs() and bfs() example 1")
+    print("--------------------------------------")
+    edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
+             (3, 1, 5), (2, 1, 23), (3, 2, 7)]
+    g = DirectedGraph(edges)
+    for start in range(5):
+        print(f'{start} DFS:{g.dfs(start)} BFS:{g.bfs(start)}')
 
     # print("\nPDF - method has_cycle() example 1")
     # print("----------------------------------")
@@ -254,7 +278,6 @@ if __name__ == '__main__':
     #     g.add_edge(src, dst)
     #     print(g.get_edges(), g.has_cycle(), sep='\n')
     # print('\n', g)
-
 
     # print("\nPDF - dijkstra() example 1")
     # print("--------------------------")
