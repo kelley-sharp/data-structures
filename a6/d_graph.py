@@ -98,13 +98,16 @@ class DirectedGraph:
         Removes an edge between two vertices with provided names
         """
         # If src or dst are not vertices in the graph
-        if src > self.v_count or dst > self.v_count:
+        if src < 0 or src > self.v_count - 1:
             return
+        if dst < 0 or dst > self.v_count - 1:
+            return
+
         # If there is no edge to remove between those vertices
         if self.adj_matrix[src][dst] == 0:
             return
 
-        self.adj_matrix[src][dst] == 0
+        self.adj_matrix[src][dst] = 0
 
     def get_vertices(self) -> []:
         """
@@ -151,7 +154,7 @@ class DirectedGraph:
             return []
 
         visited = []
-        # starting stack has start vertex
+        # Starting stack has start vertex
         stack = [v_start]
 
         while len(stack) > 0:
@@ -186,7 +189,7 @@ class DirectedGraph:
 
         visited = []
 
-        # queue up starting vertex
+        # Queue up starting vertex
         queue = deque([v_start])
 
         while len(queue) > 0:
@@ -197,8 +200,8 @@ class DirectedGraph:
             # If current is the provided end vertex
             if cur == v_end:
                 break
-            # enqueue neighbors in ascending order
-            #  if they have not been visited yet
+            # Enqueue neighbors in ascending order
+            # if they have not been visited yet
             neighbor = 0
             row = self.adj_matrix[cur]
             while neighbor < len(self.adj_matrix):
