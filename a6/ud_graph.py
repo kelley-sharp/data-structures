@@ -213,6 +213,32 @@ class UndirectedGraph:
         """
         TODO: Write this implementation
         """
+        def detect_cycle(v, visited, parent=None):
+            """
+            Recursive helper method that does a DFS-style traversal of
+            all the neighbors, looking for a cycle
+            """
+            # visit the current vertex
+            visited.add(v)
+            # check all neighbors
+            for neighbor in self.adj_list[v]:
+                # if we have seen the neighbor before and it is not the parent
+                #  then this is a cycle
+                if neighbor in visited and neighbor is not parent:
+                    return True
+                # if we have not seen the neighbor before, recursively check
+                #  for cycles setting the current vertex, v, as the parent
+                elif neighbor not in visited:
+                    if detect_cycle(neighbor, visited, v):
+                        return True
+            # every vertex and its neighbors are acyclic
+            return False
+        visited = set()
+        # loop through every vertex in the graph and search for cycles
+        for vertex in self.adj_list.keys():
+            if vertex not in visited and detect_cycle(vertex, visited):
+                return True
+        return False
 
 
 if __name__ == '__main__':

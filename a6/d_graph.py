@@ -141,8 +141,20 @@ class DirectedGraph:
 
     def is_valid_path(self, path: []) -> bool:
         """
-        TODO: Write this implementation
+        Takes a list of vertex names and returns True if the sequence of vertices
+        represents a valid path in the graph. Empty path is considered valid
         """
+        if path == []:
+            return True
+
+        # If there is only one vertex in the path and that vertex is not in the graph
+        if len(path) == 1 and path[0] not in self.adj_matrix:
+            return False
+
+        # Otherwise there are at least two vertices in the path
+        # Loop through each vertex's neighbors, if there is no edge with 
+        # the next vertex in the path, return False
+    
 
     def dfs(self, v_start, v_end=None) -> []:
         """
